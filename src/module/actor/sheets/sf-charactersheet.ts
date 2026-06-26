@@ -1,58 +1,49 @@
 import { SFCharacterTour } from '../../features/tours/sf-character-tour'
-import { IronswornSettings } from '../../helpers/settings'
 import SfCharacterSheet from '../../vue/sf-charactersheet.vue'
 import { VueActorSheet } from '../../vue/vueactorsheet'
 import { SFCharacterMoveSheet } from './sf-charactermovesheet'
 
 export class StarforgedCharacterSheet extends VueActorSheet {
-	static get defaultOptions() {
-		return foundry.utils.mergeObject(super.defaultOptions, {
-			width: 630,
-			height: 960,
-			left: 50,
-			rootComponent: SfCharacterSheet
-		}) as any
+	static DEFAULT_OPTIONS = {
+		position: { width: 630, height: 980, left: 50 },
+		window: {
+			resizable: true,
+			controls: [
+				{
+					action: 'openMoveSheet',
+					icon: 'fas fa-directions',
+					label: 'IRONSWORN.ITEMS.TypeMove',
+				},
+				{
+					action: 'openHelp',
+					icon: 'fa fa-circle-question',
+					label: 'IRONSWORN.Tour',
+				},
+			],
+		},
+		actions: {
+			openMoveSheet(this: StarforgedCharacterSheet) {
+				this._openMoveSheet()
+			},
+			async openHelp(this: StarforgedCharacterSheet) {
+				await new SFCharacterTour(this.actor).start()
+			},
+		},
+		rootComponent: SfCharacterSheet,
 	}
 
 	activateTab(tabKey: string) {
 		this.localEmitter.emit('activateTab', tabKey)
 	}
 
-	render(...renderArgs: any[]) {
-		super.render(...renderArgs)
-		if (this._state <= Application.RENDER_STATES.NONE) this._openMoveSheet()
-		return Promise.resolve(this) as any
+	async _onFirstRender(context: object, options: object) {
+		// @ts-expect-error super._onFirstRender exists on V2 base
+		await super._onFirstRender?.(context, options)
+		this._openMoveSheet()
 	}
 
-	_getHeaderButtons() {
-		const [editButton, sheetButton, tokenButton, ...otherButtons] =
-			super._getHeaderButtons()
-		return [
-			{
-				class: 'ironsworn-open-move-sheet',
-				label: game.i18n.localize('IRONSWORN.ITEMS.TypeMove'),
-				icon: 'fas fa-directions',
-				onclick: (e) => {
-					this._openMoveSheet(e)
-				}
-			},
-			editButton,
-			sheetButton,
-			tokenButton,
-			{
-				class: 'ironsworn-help',
-				icon: 'fa fa-circle-question',
-				label: '',
-				onclick: async (e) => {
-					await new SFCharacterTour(this.actor).start()
-				}
-			},
-			...otherButtons
-		]
-	}
-
-	_openMoveSheet(_e?: JQuery.ClickEvent) {
+	_openMoveSheet() {
 		this.actor.moveSheet ||= new SFCharacterMoveSheet(this.actor)
-		void this.actor.moveSheet.render(true, { focus: true })
+		void this.actor.moveSheet.render({ force: true })
 	}
 }

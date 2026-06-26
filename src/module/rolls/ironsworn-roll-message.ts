@@ -201,7 +201,7 @@ export class IronswornRollMessage {
 			const messageData = {
 				speaker,
 				content,
-				style: CONST.CHAT_MESSAGE_STYLES.ROLL,
+				style: CONST.CHAT_MESSAGE_STYLES.OTHER,
 				roll: this.roll.roll,
 				rolls: [this.roll.roll]
 			}

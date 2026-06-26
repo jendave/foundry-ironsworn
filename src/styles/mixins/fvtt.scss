@@ -51,7 +51,4 @@
 	@include meta.load-css('style:inputs');
 	@include meta.load-css('style:editor');
 
-	.chat-message {
-		background: var(--ironsworn-color-bg);
-	}
 }

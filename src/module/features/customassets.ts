@@ -1,17 +1,16 @@
 import type { Asset, AssetCollection } from '@datasworn/core/dist/Datasworn'
 import { compact } from 'lodash-es'
 import {
-	COMPENDIUM_KEY_MAP,
 	DataswornTree,
 	FoundryIndex,
-	getPackAndIndexForCompendiumKey,
-	IdParser
+	getPackAndIndexForCompendiumKey
 } from '../datasworn2'
 import { IronswornSettings } from '../helpers/settings'
 import type { IronswornItem } from '../item/item'
 
 interface DisplayAsset {
 	ds?: Asset
+	uuid?: string
 	assetFetcher: () => Promise<IronswornItem>
 }
 
@@ -26,21 +25,20 @@ interface DisplayAssetCategory {
 interface DisplayAsssetRuleset {
 	title: string
 	categories: DisplayAssetCategory[]
-	index?: FoundryIndex
 }
 
-const INDEXES: Record<string, FoundryIndex | undefined> = {}
-
-function assetFetcher(dsid: string): () => Promise<IronswornItem> {
-	const parsed = IdParser.parse(dsid)
-	const compendiumKey = COMPENDIUM_KEY_MAP.asset[parsed.rulesPackageId]
-	const pack = game.packs.get(compendiumKey)
-	return async () => {
-		INDEXES[compendiumKey] ||= await pack?.getIndex({ fields: ['flags'] })
-		const indexEntry = INDEXES[compendiumKey]?.contents?.find(
-			(x) => x.flags['foundry-ironsworn']?.dsid === dsid
-		)
-		return (await pack?.getDocument(indexEntry?._id ?? '')) as IronswornItem
+function makeAssetEntry(
+	dsid: string,
+	pack: CompendiumCollection<CompendiumCollection.Metadata>,
+	index: FoundryIndex
+): { uuid: string; assetFetcher: () => Promise<IronswornItem> } | undefined {
+	const indexEntry = index.contents.find(
+		(x) => x.flags?.['foundry-ironsworn']?.dsid === dsid
+	)
+	if (!indexEntry) return undefined
+	return {
+		uuid: indexEntry.uuid as string,
+		assetFetcher: async () => (await pack.getDocument(indexEntry._id)) as IronswornItem
 	}
 }
 
@@ -59,21 +57,22 @@ export async function createMergedAssetTree(): Promise<DisplayAsssetRuleset[]> {
 					)
 				}
 
-				const { index } = await getPackAndIndexForCompendiumKey(rsKey, 'asset')
+				const { pack, index } = await getPackAndIndexForCompendiumKey(rsKey, 'asset')
+				if (!pack || !index) return undefined
 
 				return {
 					title: game.i18n.localize(`IRONSWORN.RULESETS.${rsKey}`),
-					index,
 					categories: Object.values(rs.assets).map((cat) => {
 						return {
 							ds: cat,
 							title: i18n(cat.name, 'Title'),
 							description: i18n(cat.name, 'Description'),
 							expanded: false,
-							assets: Object.values(cat.contents).map((asset) => ({
-								ds: asset,
-								assetFetcher: assetFetcher(asset._id)
-							}))
+							assets: Object.values(cat.contents).flatMap((asset) => {
+								const entry = makeAssetEntry(asset._id, pack, index)
+								if (!entry) return []
+								return [{ ds: asset, ...entry }]
+							})
 						}
 					})
 				}

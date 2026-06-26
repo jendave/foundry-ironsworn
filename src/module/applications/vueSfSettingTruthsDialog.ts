@@ -4,41 +4,29 @@ import { IronswornJournalEntry } from '../journal/journal-entry'
 import sfTruthsVue from '../vue/sf-truths.vue'
 import { VueAppMixin } from '../vue/vueapp.js'
 
-export class SFSettingTruthsDialogVue extends VueAppMixin(FormApplication) {
+const { ApplicationV2 } = foundry.applications.api
+
+export class SFSettingTruthsDialogVue extends VueAppMixin(ApplicationV2) {
 	constructor(protected truthset: DataswornRulesetKey) {
 		super({})
 	}
 
-	static get defaultOptions() {
-		return foundry.utils.mergeObject(super.defaultOptions, {
-			title: game.i18n.localize('IRONSWORN.JOURNALENTRYPAGES.TypeTruth'),
-			id: 'setting-truths-dialog',
+	static DEFAULT_OPTIONS = {
+		id: 'setting-truths-dialog',
+		classes: ['ironsworn', 'sheet'],
+		window: {
+			title: 'IRONSWORN.JOURNALENTRYPAGES.TypeTruth',
 			resizable: true,
-			width: 700,
-			height: 700,
-			rootComponent: sfTruthsVue
-		}) as any
+		},
+		position: { width: 700, height: 700 },
+		rootComponent: sfTruthsVue,
 	}
 
-	protected async _updateObject(
-		_event: Event,
-		_formData?: object | undefined
-	): Promise<void> {
-		// Nothing to do
-	}
-
-	getData(
-		options?: Partial<ApplicationOptions> | undefined
-	): MaybePromise<object>
-	getData(
-		options?: Partial<FormApplicationOptions> | undefined
-	): MaybePromise<object>
-	async getData(_options?: unknown) {
+	async _getVueData(): Promise<object> {
 		const pack = game.packs.get(COMPENDIUM_KEY_MAP.truth[this.truthset])
 		const documents = (await pack?.getDocuments()) as IronswornJournalEntry[]
 		if (!documents) throw new Error("can't load truth JEs")
 
-		// Get the order from DS
 		const dsTruths = DataswornTree.get(this.truthset)?.truths
 		if (!dsTruths) throw new Error("can't find DS truths")
 
@@ -50,7 +38,6 @@ export class SFSettingTruthsDialogVue extends VueAppMixin(FormApplication) {
 		}))
 
 		return {
-			...(await super.getData()),
 			truths: truths.map(({ ds, je }) => ({
 				ds,
 				je: () => je // Prevent vue from wrapping this in Reactive

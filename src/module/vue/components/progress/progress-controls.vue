@@ -44,7 +44,7 @@ async function addProgressItem(subtype) {
 }
 
 function openFoeBrowser() {
-	new FoeBrowser().render(true)
+	void new FoeBrowser().render({ force: true })
 }
 </script>
 

@@ -1,19 +1,14 @@
-{{#if data.title.show}}
-<header class="journal-page-header">
-    <h{{data.title.level}}>{{title}}</h{{data.title.level}}>
-</header>
-{{/if}}
 <section class="journal-page-content">
   <section class="truth-option-description">
     {{{renderedDescription}}}
-    {{#if data.system.Subtable}}
+    {{#if system.Subtable}}
     <table>
       <thead>
         <th>{{localize 'IRONSWORN.OracleTable.ColumnLabel.Roll'}}</th>
         <th>{{localize 'IRONSWORN.OracleTable.ColumnLabel.Result'}}</th>
       </thead>
       <tbody>
-        {{#each data.system.Subtable}}
+        {{#each system.Subtable}}
           <tr>
             <td>{{Floor}}—{{Ceiling}}</td>
             <td>{{Result}}</td>
@@ -24,9 +19,7 @@
   {{/if}}
   </section>
   <section class="truth-quest-starter">
-    <h{{sum data.title.level 1}}>
-      {{localize 'IRONSWORN.QuestStarter'}}
-    </h{{sum data.title.level 1}}>
-    {{{data.system.Quest}}}
+    <h2>{{localize 'IRONSWORN.QuestStarter'}}</h2>
+    {{{system.Quest}}}
   </section>
 </section>

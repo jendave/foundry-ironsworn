@@ -42,7 +42,7 @@ async function ensureFolder(...path: string[]): Promise<Folder | undefined> {
 async function editSector() {
 	const sceneId = game.user?.viewedScene
 	if (sceneId) {
-		await new EditSectorDialog(sceneId).render(true, { focus: true })
+		await new EditSectorDialog(sceneId).render({ force: true })
 	}
 }
 
@@ -173,7 +173,7 @@ export function activateSceneButtonListeners() {
 			icon: 'isicon-oracle',
 			visible: true,
 			button: true,
-			onChange: async () => await theOracleWindow().render(true, { focus: true })
+			onChange: async () => await theOracleWindow().render({ force: true })
 		}
 
 		if (controls.tokens) {

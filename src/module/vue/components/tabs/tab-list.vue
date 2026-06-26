@@ -34,7 +34,11 @@ defineExpose({
 .tabList {
 	// TODO:
 	// * fun slidey animation by applying some kind of border stroke or gradient background image, and transitioning its offset? basically, apply it to 1/n of the height or width, where n == the number of tabs.
-	flex-grow: 0;
+	// `&[role]` raises specificity above the global `.flexcol > * { flex: 1 }`
+	// default so the tab nav stays its natural size and never stretches.
+	&[role='tablist'] {
+		flex: 0 0 auto;
+	}
 
 	&[aria-orientation='horizontal'] {
 		flex-flow: row nowrap;

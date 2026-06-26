@@ -26,8 +26,22 @@ declare global {
 
 		const applications: {
 			apps: { DocumentSheetConfig: any; [k: string]: any }
-			sheets: Record<string, any>
-			api: Record<string, any>
+			sheets: {
+				ActorSheetV2: any
+				ItemSheetV2: any
+				journal: {
+					JournalEntryPageHandlebarsSheet: any
+					JournalEntryPageSheet: any
+					JournalEntryPageTextSheet: any
+					[k: string]: any
+				}
+				[k: string]: any
+			}
+			api: {
+				ApplicationV2: any
+				HandlebarsApplicationMixin: any
+				[k: string]: any
+			}
 			sidebar: Record<string, any>
 			ux: Record<string, any>
 			[k: string]: any
@@ -109,4 +123,3 @@ declare module '@league-of-foundry-developers/foundry-vtt-types/src/foundry/comm
 		ROLL: 5
 	}>
 }
-

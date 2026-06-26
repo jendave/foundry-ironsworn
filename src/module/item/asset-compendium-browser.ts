@@ -1,18 +1,15 @@
 import AssetCompendiumBrowserVue from '../vue/asset-compendium-browser.vue'
 import { VueAppMixin } from '../vue/vueapp.js'
 
-export class AssetCompendiumBrowser extends VueAppMixin(Application) {
-	constructor() {
-		super({})
-	}
+const { ApplicationV2 } = foundry.applications.api
 
-	static get defaultOptions() {
-		return foundry.utils.mergeObject(super.defaultOptions, {
-			title: game.i18n.localize('IRONSWORN.ITEMS.TypeAsset'),
-			width: 400,
-			height: 600,
+export class AssetCompendiumBrowser extends VueAppMixin(ApplicationV2) {
+	static DEFAULT_OPTIONS = {
+		window: {
+			title: 'IRONSWORN.ITEMS.TypeAsset',
 			resizable: true,
-			rootComponent: AssetCompendiumBrowserVue
-		}) as any
+		},
+		position: { width: 400, height: 600 },
+		rootComponent: AssetCompendiumBrowserVue,
 	}
 }

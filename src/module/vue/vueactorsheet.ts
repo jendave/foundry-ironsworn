@@ -3,52 +3,51 @@ import type { IronswornItem } from '../item/item'
 import { $ActorKey } from './provisions'
 import { VueAppMixin } from './vueapp.js'
 
-export abstract class VueActorSheet extends VueAppMixin(foundry.appv1.sheets.ActorSheet) {
-	static get defaultOptions() {
-		return foundry.utils.mergeObject(super.defaultOptions, {
-			classes: ['ironsworn', 'actor']
-		})
+export abstract class VueActorSheet extends VueAppMixin(
+	foundry.applications.sheets.ActorSheetV2 as any
+) {
+	static DEFAULT_OPTIONS = {
+		classes: ['ironsworn', 'actor'],
+		window: {
+			resizable: true,
+			controls: [
+				{
+					action: 'toggleEditMode',
+					icon: 'fas fa-edit',
+					label: 'IRONSWORN.Edit',
+				},
+			],
+		},
+		actions: {
+			toggleEditMode(this: VueActorSheet) {
+				const currentValue = this.actor.getFlag(
+					'foundry-ironsworn',
+					'edit-mode'
+				)
+				void this.actor.setFlag('foundry-ironsworn', 'edit-mode', !currentValue)
+			},
+		},
 	}
 
 	setupVueApp(app: App) {
 		app.provide($ActorKey, this.actor)
 	}
 
-	getData(...args): MaybePromise<object> {
+	async _getVueData(): Promise<object> {
 		return {
-			...super.getData(...args),
-			actor: this.actor.toObject()
+			actor: this.actor.toObject(),
 		}
 	}
 
-	async close(...args) {
-		this.actor.moveSheet?.close(...args)
-		await super.close(...args)
-	}
-
-	_getHeaderButtons() {
-		return [
-			{
-				class: 'ironsworn-toggle-edit-mode',
-				label: game.i18n.localize('IRONSWORN.Edit'),
-				icon: 'fas fa-edit',
-				onclick: (e) => {
-					this._toggleEditMode(e)
-				}
-			},
-			...super._getHeaderButtons()
-		]
-	}
-
-	_toggleEditMode(e: JQuery.ClickEvent) {
-		e.preventDefault()
-
-		const currentValue = this.actor.getFlag('foundry-ironsworn', 'edit-mode')
-		this.actor.setFlag('foundry-ironsworn', 'edit-mode', !currentValue)
+	async _onClose(options: object) {
+		await this.actor.moveSheet?.close()
+		super._onClose(options)
 	}
 
 	protected async _onDrop(event: DragEvent) {
-		const data = (foundry.applications.ux.TextEditor.implementation as any).getDragEventData(event)
+		const data = (
+			foundry.applications.ux.TextEditor.implementation as any
+		).getDragEventData(event)
 
 		if (['AssetBrowserData', 'FoeBrowserData'].includes(data.type)) {
 			const document = (await fromUuid(data.uuid)) as
@@ -56,8 +55,8 @@ export abstract class VueActorSheet extends VueAppMixin(foundry.appv1.sheets.Act
 				| undefined
 
 			if (document != null) {
-				this.actor.createEmbeddedDocuments('Item', [
-					(document as any).toObject()
+				void this.actor.createEmbeddedDocuments('Item', [
+					(document as any).toObject(),
 				])
 			}
 		}

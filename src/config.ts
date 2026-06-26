@@ -64,7 +64,8 @@ export const IRONSWORN: IronswornConfig = {
 
 	// TODO: if we wanted to implement enrichMarkdown as a showdown plugin, we could use our own instance instead.
 	get showdown() {
-		return foundry.appv1.sheets.JournalTextPageSheet._converter
+		return foundry.applications.sheets.journal.JournalEntryPageTextSheet
+			._converter
 	},
 
 	applications: {

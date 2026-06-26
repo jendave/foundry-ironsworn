@@ -1,19 +1,15 @@
 import FoeBrowserVue from '../vue/foe-browser.vue'
 import { VueAppMixin } from '../vue/vueapp.js'
 
-export class FoeBrowser extends VueAppMixin(Application) {
-	constructor() {
-		super({})
-	}
+const { ApplicationV2 } = foundry.applications.api
 
-	static get defaultOptions() {
-		return foundry.utils.mergeObject(super.defaultOptions, {
-			title: game.i18n.localize('IRONSWORN.Foes'),
-			width: 450,
-			height: 600,
-			left: 25,
+export class FoeBrowser extends VueAppMixin(ApplicationV2) {
+	static DEFAULT_OPTIONS = {
+		window: {
+			title: 'IRONSWORN.Foes',
 			resizable: true,
-			rootComponent: FoeBrowserVue
-		}) as any
+		},
+		position: { width: 450, height: 600, left: 25 },
+		rootComponent: FoeBrowserVue,
 	}
 }

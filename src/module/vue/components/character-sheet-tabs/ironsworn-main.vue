@@ -1,13 +1,13 @@
 <template>
-	<div class="flexrow">
-		<div class="flexcol">
-			<section class="sheet-area flexcol">
+	<div class="flexrow" :class="$style.root">
+		<div class="flexcol" :class="$style.col">
+			<section class="sheet-area flexcol" :class="$style.col">
 				<!-- Bonds -->
 				<Bonds :compact-progress="true" data-tourid="bonds" />
 
 				<hr class="nogrow" />
 				<!-- Assets -->
-				<PlayerAssets data-tourid="assets">
+				<PlayerAssets data-tourid="assets" :class="$style.assets">
 					<template #start>
 						<h4 class="nogrow" :class="$style.h4">
 							{{ $t('IRONSWORN.ITEMS.TypeAsset') }}
@@ -18,7 +18,7 @@
 		</div>
 		<ActiveCompletedProgresses
 			:compact-progress="true"
-			:class="$style.progress"
+			:class="[$style.col, $style.progress]"
 			data-tourid="progress" />
 	</div>
 </template>
@@ -28,21 +28,27 @@ import ActiveCompletedProgresses from 'component:progress/active-completed-progr
 import PlayerAssets from 'component:asset/player-assets.vue'
 </script>
 <style lang="scss" module>
+.root {
+	flex: 1 1 0;
+	min-height: 0;
+}
+
+.col {
+	flex: 1 1 0;
+	min-height: 0;
+}
+
+.assets {
+	flex: 1 1 0;
+	min-height: 0;
+}
+
 .progress {
 	margin-top: var(--ironsworn-spacer-md);
 }
 
 .h4 {
 	text-transform: uppercase;
-}
-
-.h3 {
-	transition: background-color 0.2s ease;
-	margin: var(--ironsworn-spacer-md) 0;
-
-	i {
-		width: 15px;
-		text-align: center;
-	}
+	font-size: var(--font-size-16);
 }
 </style>

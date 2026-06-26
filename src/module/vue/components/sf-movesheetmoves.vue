@@ -150,6 +150,7 @@ CONFIG.IRONSWORN.emitter.on('highlightMove', async (targetMoveUuid) => {
 .rulesetname {
 	text-transform: uppercase;
 	margin: 0.5rem 5px;
+	color: var(--ironsworn-color-fg);
 }
 
 .list {

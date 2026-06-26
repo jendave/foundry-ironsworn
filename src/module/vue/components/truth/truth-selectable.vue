@@ -1,12 +1,22 @@
 <template>
-	<label class="nogrow flexrow">
-		<input
+	<div class="nogrow flexrow">
+		<IronCheckbox
+			class="nogrow truth-radio"
 			:checked="selected"
-			type="radio"
-			class="nogrow"
-			:name="radioGroup"
-			@change="emitValue"
-		/>
+			@change="select">
+			<template #checked="scope">
+				<FontIcon
+					v-bind="scope"
+					name="dot-circle"
+					:family="FontAwesome.Family.Regular" />
+			</template>
+			<template #unchecked="scope">
+				<FontIcon
+					v-bind="scope"
+					name="circle"
+					:family="FontAwesome.Family.Regular" />
+			</template>
+		</IronCheckbox>
 		<div class="flexcol">
 			<p v-if="pageSystem.Summary">
 				<strong>{{ pageSystem.Summary }}</strong>
@@ -18,21 +28,31 @@
 				:content="pageSystem.Description"
 			/>
 
-			<section v-if="page.subtable">
-				<label
+			<section v-if="page.subtable" class="flexcol subtable">
+				<div
 					v-for="(entry, i) in page.subtable.results"
 					:key="`subtableRow${i}`"
-					class="flexrow nogrow"
+					class="flexrow nogrow subtable-row"
+					@click="subtableSelect(entry)"
 				>
-					<input
-						ref="suboptions"
-						type="radio"
-						class="nogrow"
-						:name="pageSystem.dsid"
-						@change="subtableSelect(entry)"
-					/>
+					<IronCheckbox
+						class="nogrow truth-radio subtable-radio"
+						:checked="suboption === entry.description">
+						<template #checked="scope">
+							<FontIcon
+								v-bind="scope"
+								name="dot-circle"
+								:family="FontAwesome.Family.Regular" />
+						</template>
+						<template #unchecked="scope">
+							<FontIcon
+								v-bind="scope"
+								name="circle"
+								:family="FontAwesome.Family.Regular" />
+						</template>
+					</IronCheckbox>
 					<p v-html="entry.description" />
-				</label>
+				</div>
 
 				<!-- TODO: custom input -->
 			</section>
@@ -44,7 +64,7 @@
 				:content="pageSystem.Quest"
 			/>
 		</div>
-	</label>
+	</div>
 </template>
 
 <script setup lang="ts">
@@ -53,23 +73,31 @@ import type { IronswornJournalPage } from '../../../journal/journal-entry-page'
 import type { TruthOptionDataPropertiesData } from '../../../journal/journal-entry-page-types'
 import { OracleTableResult } from '../../../roll-table/oracle-table-result'
 import RenderedText from 'component:rendered-text.vue'
+import IronCheckbox from '../input/iron-checkbox.vue'
+import FontIcon from '../icon/font-icon.vue'
+import { FontAwesome } from '../icon/icon-common'
 
 const props = defineProps<{
 	page: IronswornJournalPage<'truth'>
 	radioGroup: string
+	selected?: boolean
 }>()
 const pageSystem = props.page.system as TruthOptionDataPropertiesData
 
-const selected = ref(false)
+function select() {
+	$emit('select')
+	emitValue()
+}
 
 const suboption = ref<string | undefined>()
 function subtableSelect(entry: OracleTableResult) {
 	suboption.value = entry.description
-	selected.value = true
+	$emit('select')
 	emitValue()
 }
 
 const $emit = defineEmits<{
+	select: []
 	change: [string, string] // title, text
 }>()
 function emitValue() {
@@ -92,10 +120,8 @@ function emitValue() {
 	$emit('change', title, text.trim())
 }
 
-const suboptions = ref<HTMLElement[]>([])
-
 async function selectAndRandomize() {
-	selected.value = true
+	$emit('select')
 
 	if (
 		props.page.subtable &&
@@ -105,10 +131,10 @@ async function selectAndRandomize() {
 
 		if (!roll || !roll.total) return
 
-		const selectedIndex = props.page.subtable.results.contents.findIndex(
-			(row) => row.hasInRange(roll.total as number)
+		const selectedEntry = props.page.subtable.results.contents.find((row) =>
+			row.hasInRange(roll.total as number)
 		)
-		suboptions.value[selectedIndex]?.click()
+		if (selectedEntry) suboption.value = selectedEntry.description
 	}
 
 	emitValue()
@@ -118,10 +144,30 @@ defineExpose({ selectAndRandomize })
 </script>
 
 <style lang="scss" scoped>
-input[type='radio'] {
+.truth-radio {
 	flex-grow: 0;
+	flex-shrink: 0;
+	flex-basis: var(--checkbox-size, 1.25rem);
 	align-self: flex-start;
 	margin: var(--ironsworn-spacer-lg);
+	width: var(--checkbox-size, 1.25rem);
+	height: var(--checkbox-size, 1.25rem);
+	min-width: var(--checkbox-size, 1.25rem);
+}
+
+.subtable-row {
+	align-items: center;
+	gap: var(--ironsworn-spacer-md);
+	cursor: pointer;
+
+	p {
+		margin: 0;
+	}
+}
+
+.subtable-radio {
+	margin: 0;
+	align-self: center;
 }
 
 .quest {

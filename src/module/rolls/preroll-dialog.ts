@@ -149,7 +149,7 @@ function parseCheckbox(value?: string) {
 }
 
 function prerollOptionsWithFormData(
-	form: JQuery<HTMLFormElement>,
+	form: HTMLFormElement,
 	base: PreRollOptions
 ): PreRollOptions {
 	const opts = cloneDeep(base)
@@ -165,14 +165,14 @@ function prerollOptionsWithFormData(
 	const isSet = (x) =>
 		x !== null && x !== 'null' && x !== undefined && !isNaN(x) && x !== ''
 
-	const valMap: ValueMap = form
-		.serializeArray()
-		.reduce((coll, { name, value }) => {
-			if (isSet(value)) {
-				coll[name] = parseInt(value, 10)
-			}
-			return coll
-		}, {})
+	const formData = new FormData(form)
+	const valMap: ValueMap = {}
+	for (const [name, value] of formData.entries()) {
+		const str = value as string
+		if (isSet(str)) {
+			valMap[name] = parseInt(str, 10)
+		}
+	}
 
 	opts.adds = valMap.adds
 
@@ -209,25 +209,45 @@ function prerollOptionsWithFormData(
 	return opts
 }
 
-export class IronswornPrerollDialog extends Dialog<
-	PreRollOptions & DialogOptions
-> {
+const { ApplicationV2, DialogV2 } = foundry.applications.api
+
+export class IronswornPrerollDialog extends DialogV2 {
 	prerollOptions: PreRollOptions = {}
 
-	constructor(
-		pro: PreRollOptions,
-		data: Dialog.Data,
-		options?: Partial<DialogOptions>
-	) {
-		super(data, options)
+	constructor(pro: PreRollOptions, config: object) {
+		super(config)
 		this.prerollOptions = pro
 	}
 
-	static get defaultOptions() {
-		return foundry.utils.mergeObject(super.defaultOptions, {
+	static get DEFAULT_OPTIONS() {
+		return {
 			classes: ['ironsworn', 'dialog'],
-			width: 500
+			position: { width: 500 }
+		}
+	}
+
+	_onRender(_context: object, _options: object): void {
+		const element = this.element as HTMLElement
+
+		// Resize when expanding the "advanced" section
+		element.querySelector('details')?.addEventListener('toggle', (ev) => {
+			const target = ev.currentTarget as HTMLDetailsElement
+			const delta = (target.open ? 1 : -1) * 160
+			const pos = (this as any).position
+			;(this as any).setPosition({ height: (pos.height ?? 0) + delta })
 		})
+
+		// Re-render the graphic when controls change
+		const form = element.querySelector('form') as HTMLFormElement
+		const rerender = async () => {
+			const pro = prerollOptionsWithFormData(form, this.prerollOptions)
+			const graphic = await renderRollGraphic({ preRollOptions: pro })
+			element.querySelector('.roll-graphic')?.replaceWith(
+				document.createRange().createContextualFragment(graphic)
+			)
+		}
+		element.querySelectorAll('input').forEach((el) => el.addEventListener('change', rerender))
+		element.querySelectorAll('select').forEach((el) => el.addEventListener('change', rerender))
 	}
 
 	static async showForStat(
@@ -254,21 +274,22 @@ export class IronswornPrerollDialog extends Dialog<
 			prerollOptions,
 			action: true
 		})
-		const buttons = {
-			[dataforgedStat]: {
-				label: `<span class="button-text">${statData.source}</span>`,
-				icon: '<i class="isicon-d10-tilt juicy"></i>',
-				callback: async (el: HTMLElement | JQuery<HTMLElement>) => {
-					void IronswornPrerollDialog.submitRoll(el, prerollOptions)
-				}
-			}
-		}
+
 		return new IronswornPrerollDialog(prerollOptions, {
-			title,
+			window: { title },
 			content,
-			buttons,
-			default: dataforgedStat
-		}).render(true)
+			buttons: [
+				{
+					action: dataforgedStat,
+					label: statData.source,
+					icon: 'isicon-d10-tilt juicy',
+					default: true,
+					callback: async (_ev: Event, button: HTMLButtonElement) => {
+						void IronswornPrerollDialog.submitRoll(button.form!, prerollOptions)
+					}
+				}
+			]
+		}).render({ force: true })
 	}
 
 	static async showForProgress(
@@ -299,23 +320,22 @@ export class IronswornPrerollDialog extends Dialog<
 		}
 
 		const content = await this.renderContent({ prerollOptions, move })
-		const buttons = {
-			[name]: {
-				label: `<span class=button-text>${game.i18n.localize(
-					'IRONSWORN.Roll'
-				)}</span>`,
-				icon: '<i class="isicon-d10-tilt juicy"></i>',
-				callback: async (el: HTMLElement | JQuery<HTMLElement>) => {
-					void IronswornPrerollDialog.submitRoll(el, prerollOptions)
-				}
-			}
-		}
+
 		return new IronswornPrerollDialog(prerollOptions, {
-			title,
+			window: { title },
 			content,
-			buttons,
-			default: name
-		}).render(true)
+			buttons: [
+				{
+					action: 'roll',
+					label: game.i18n.localize('IRONSWORN.Roll'),
+					icon: 'isicon-d10-tilt juicy',
+					default: true,
+					callback: async (_ev: Event, button: HTMLButtonElement) => {
+						void IronswornPrerollDialog.submitRoll(button.form!, prerollOptions)
+					}
+				}
+			]
+		}).render({ force: true })
 	}
 
 	static async showForOfficialMove(moveDsId: string, opts?: showForMoveOpts) {
@@ -396,8 +416,10 @@ export class IronswornPrerollDialog extends Dialog<
 			showActorSelect,
 			action: true
 		})
-		const buttons = {}
-		const addButton = (i: number, mode: DFRollMethod, stats: string[]) => {
+
+		const buttons = options.map((option, i) => {
+			const stats = option.Using as string[]
+			const mode = option.Method as DFRollMethod
 			const localizedStats = stats.map((s) =>
 				game.i18n.localize(`IRONSWORN.${s.capitalize()}`)
 			)
@@ -412,52 +434,41 @@ export class IronswornPrerollDialog extends Dialog<
 				)
 			}
 
-			buttons[i.toString()] = {
-				// use the below instead as a silly method for sneaking classes in
-				// buttons[
-				//   kebabCase(label) + ' clickable isicon-d10-tilt juicy icon-button'
-				// ] = {
-				label: `<span class=button-text>${label}</span>`,
-				icon: '<i class="isicon-d10-tilt juicy"></i>',
-				callback: (el: JQuery<HTMLElement>) => {
+			return {
+				action: i.toString(),
+				label,
+				icon: 'isicon-d10-tilt juicy',
+				default: i === 0,
+				callback: (_ev: Event, button: HTMLButtonElement) => {
+					const form = button.form!
 					let rollingActor: IronswornActor<'character'>
 					if (allActors.length === 1) {
 						rollingActor = allActors[0]
 					} else {
-						// Get the selected actor from the dialog
-						const actorId = el.find('#char').val() as string
-						rollingActor = game.actors?.get(
-							actorId
-						) as IronswornActor<'character'>
+						const actorId = (form.elements.namedItem('char') as HTMLSelectElement).value
+						rollingActor = game.actors?.get(actorId) as IronswornActor<'character'>
 					}
 
-					// Set up for the roll
 					prerollOptions.momentum = rollingActor.system.momentum.value
 					prerollOptions.stat = chooseStatToRoll(mode, stats, rollingActor)
 
-					void IronswornPrerollDialog.submitRoll(el, prerollOptions)
+					void IronswornPrerollDialog.submitRoll(form, prerollOptions)
 				}
 			}
-		}
-
-		for (let i = 0; i < options.length; i++) {
-			const option = options[i]
-			addButton(i, option.Method, option.Using)
-		}
+		})
 
 		return new IronswornPrerollDialog(prerollOptions, {
-			title,
+			window: { title },
 			content,
-			buttons,
-			default: '0'
-		}).render(true)
+			buttons
+		}).render({ force: true })
 	}
 
 	private static async submitRoll(
-		el: HTMLElement | JQuery<HTMLElement>,
+		form: HTMLFormElement,
 		opts: PreRollOptions
 	) {
-		const realOpts = prerollOptionsWithFormData($(el).find('form'), opts)
+		const realOpts = prerollOptionsWithFormData(form, opts)
 
 		const r = new IronswornRoll(realOpts)
 		const msg = new IronswornRollMessage(r)
@@ -499,28 +510,5 @@ export class IronswornPrerollDialog extends Dialog<
 			graphic,
 			advancedOptionsOpen
 		})
-	}
-
-	activateListeners(html: JQuery<HTMLElement>): void {
-		super.activateListeners(html)
-
-		// Resize when expanding the "advanced" section
-		html.find('details').on('toggle', (ev) => {
-			const delta = (ev.currentTarget.open ? 1 : -1) * 160
-			const app = html.parents('.app')
-			app.height((app.height() ?? 0) + delta)
-		})
-
-		// Re-render the graphic when controls change
-		const rerender = async () => {
-			const pro = prerollOptionsWithFormData(
-				this.element.find('form'),
-				this.prerollOptions
-			)
-			const graphic = await renderRollGraphic({ preRollOptions: pro })
-			this.element.find('.roll-graphic').replaceWith(graphic)
-		}
-		html.find('input').on('change', rerender)
-		html.find('select').on('change', rerender)
 	}
 }

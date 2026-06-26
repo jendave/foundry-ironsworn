@@ -20,8 +20,8 @@
 			</h2>
 
 			<CollapseTransition>
-				<Suspense>
-					<div v-if="category.expanded">
+				<div v-if="category.expanded">
+					<Suspense>
 						<section
 							:id="category.title"
 							class="asset-category-contents"
@@ -38,12 +38,13 @@
 							<AssetBrowserCard
 								v-for="(asset, i) in category.assets"
 								:key="asset.ds?._id ?? i"
+								:uuid="asset.uuid"
 								:assetFetcher="asset.assetFetcher"
 								class="nogrow movesheet-row"
 							/>
 						</section>
-					</div>
-				</Suspense>
+					</Suspense>
+				</div>
 			</CollapseTransition>
 		</section>
 	</section>
@@ -70,6 +71,7 @@ h1 {
 	height: min-content;
 	line-height: 1.5;
 	text-transform: uppercase;
+	color: var(--ironsworn-color-fg);
 }
 
 h2 {
@@ -77,11 +79,13 @@ h2 {
 	border: none;
 	height: min-content;
 	line-height: 1.5;
+	color: var(--ironsworn-color-fg);
 
 	button {
 		height: min-content;
 		text-transform: uppercase;
 		line-height: 1.5;
+		color: var(--ironsworn-color-fg);
 	}
 }
 

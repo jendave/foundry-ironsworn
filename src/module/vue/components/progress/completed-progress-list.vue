@@ -6,6 +6,7 @@
 		:disabled="!items.length"
 		:class="$style.wrapper"
 		toggle-button-class="clickable text"
+		toggle-wrapper-is="div"
 		:base-id="`${actor._id}_progress-completed`">
 		<ProgressList
 			v-bind="$props.listProps"
@@ -76,6 +77,7 @@ defineExpose({
 	border-radius: var(--ironsworn-border-radius-lg);
 	border-color: var(--ironsworn-color-fg-10);
 	background-color: var(--ironsworn-color-fg-10);
+	font-size: var(--font-size-14);
 }
 
 .list {

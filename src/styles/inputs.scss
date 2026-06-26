@@ -50,6 +50,9 @@ input[type='search'] {
 // CHECKBOXES
 input[type='checkbox'] {
 	accent-color: var(--ironsworn-color-fg);
+	--checkbox-background-color: var(--ironsworn-color-fg);
+	--checkbox-checked-color: var(--ironsworn-color-fg);
+	--checkbox-font-weight: normal;
 	cursor: pointer;
 }
 
@@ -60,6 +63,8 @@ label.checkbox {
 // RADIO BUTTONS
 input[type='radio'] {
 	accent-color: var(--ironsworn-color-fg);
+	--checkbox-background-color: var(--ironsworn-color-fg);
+	--checkbox-checked-color: var(--ironsworn-color-fg);
 	cursor: pointer;
 }
 

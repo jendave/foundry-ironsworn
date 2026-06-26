@@ -48,9 +48,8 @@ export class IronswornActor<
 	}
 
 	static async createDialog(data, _options = {}) {
-		if (CREATE_DIALOG == null) CREATE_DIALOG = new CreateActorDialog()
-		CREATE_DIALOG.options.folder = data?.folder
-		CREATE_DIALOG.render(true)
+		CREATE_DIALOG = new CreateActorDialog(data?.folder)
+		void CREATE_DIALOG.render({ force: true })
 		return undefined
 	}
 

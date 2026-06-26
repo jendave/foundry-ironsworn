@@ -3,43 +3,47 @@ import { RANK_INCREMENTS } from '../../constants'
 import { ChallengeRank } from '../../fields/ChallengeRank'
 import { IronswornPrerollDialog } from '../../rolls'
 
-export class JournalProgressPageSheet extends foundry.appv1.sheets.JournalPageSheet {
-	static get defaultOptions() {
-		const options = super.defaultOptions
-		options.height = 300
-		options.classes.push('progress', 'ironsworn')
-		console.log({ options })
-		return options
+const { JournalEntryPageHandlebarsSheet } = foundry.applications.sheets.journal
+
+export class JournalProgressPageSheet extends JournalEntryPageHandlebarsSheet {
+	static DEFAULT_OPTIONS = {
+		classes: ['progress', 'ironsworn'],
+		position: { height: 300 },
+		actions: {
+			markProgress: JournalProgressPageSheet.markProgress,
+			unmarkProgress: JournalProgressPageSheet.unmarkProgress,
+			rollProgress: JournalProgressPageSheet.rollProgress,
+			setRank: JournalProgressPageSheet.setRank
+		}
 	}
 
-	get template() {
-		return `systems/foundry-ironsworn/templates/journal/progress-page-${
-			this.isEditable ? 'edit' : 'view'
-		}.hbs`
+	static EDIT_PARTS = {
+		header: (JournalEntryPageHandlebarsSheet as any).EDIT_PARTS.header,
+		content: {
+			template:
+				'systems/foundry-ironsworn/templates/journal/progress-page-edit.hbs'
+		},
+		footer: (JournalEntryPageHandlebarsSheet as any).EDIT_PARTS.footer
 	}
 
-	protected async _renderInner(data) {
-		await (loadTemplates as any)({
-			progressButtons:
-				'systems/foundry-ironsworn/templates/journal/progress-buttons.hbs',
-			progressBoxes:
-				'systems/foundry-ironsworn/templates/journal/progress-boxes.hbs',
-			rankPips:
-				'systems/foundry-ironsworn/templates/journal/progress-rank-pips.hbs'
-		})
-		return await super._renderInner(data)
+	static VIEW_PARTS = {
+		content: {
+			template:
+				'systems/foundry-ironsworn/templates/journal/progress-page-view.hbs',
+			root: true
+		}
 	}
 
-	getData(options?: Partial<DocumentSheetOptions> | undefined): any {
-		const data = super.getData(options) as any
+	async _prepareContentContext(context: any, _options: object): Promise<void> {
+		const system = this.page.system
 
-		data.currentRank = ChallengeRank.localizeValue(
-			data.data.system.rank ?? ChallengeRank.RANK.Troublesome
+		context.currentRank = ChallengeRank.localizeValue(
+			system.rank ?? ChallengeRank.RANK.Troublesome
 		)
-		data.rankButtons = Object.values(ChallengeRank.RANK).map((rank) => ({
+		context.rankButtons = Object.values(ChallengeRank.RANK).map((rank) => ({
 			rank,
 			i18nRank: ChallengeRank.localizeValue(rank),
-			selected: data.data.system.rank === rank
+			selected: system.rank === rank
 		}))
 
 		// Compute some progress numbers
@@ -47,11 +51,11 @@ export class JournalProgressPageSheet extends foundry.appv1.sheets.JournalPageSh
 			ticks: 0,
 			lineTransforms: [] as string[]
 		}))
-		const ticksRemainder = data.data.system.ticks % 4
-		data.filledBoxes = Math.floor(data.data.system.ticks / 4)
+		const ticksRemainder = system.ticks % 4
+		context.filledBoxes = Math.floor(system.ticks / 4)
 
-		fill(boxes, { ticks: 4, lineTransforms: [] }, 0, data.filledBoxes)
-		boxes[data.filledBoxes] = { ticks: ticksRemainder, lineTransforms: [] }
+		fill(boxes, { ticks: 4, lineTransforms: [] }, 0, context.filledBoxes)
+		boxes[context.filledBoxes] = { ticks: ticksRemainder, lineTransforms: [] }
 
 		// List of line transforms
 		const transforms = [
@@ -60,51 +64,46 @@ export class JournalProgressPageSheet extends foundry.appv1.sheets.JournalPageSh
 			'rotate(-90, 50, 50)',
 			''
 		]
-		for (let i = 0; i < boxes.length; i++) {
-			const box = boxes[i]
-
+		for (const box of boxes) {
 			if (box.ticks > 0) box.lineTransforms.push(transforms[0])
 			if (box.ticks > 1) box.lineTransforms.push(transforms[1])
 			if (box.ticks > 2) box.lineTransforms.push(transforms[2])
 			if (box.ticks > 3) box.lineTransforms.push(transforms[3])
 		}
-		data.boxes = boxes
-
-		return data
+		context.boxes = boxes
+		context.system = system
 	}
 
-	activateListeners(html: JQuery<HTMLElement>): void {
-		html.find('.rank-pip').on('click', async (ev) => {
-			await this.object.update({
-				system: { rank: parseInt(ev.currentTarget.dataset.rank ?? '0') }
-			})
-			this.render()
+	static async setRank(this: any, _event: PointerEvent, target: HTMLElement) {
+		await this.page.update({
+			system: { rank: parseInt(target.dataset.rank ?? '0') }
 		})
-		html.find('.ironsworn__progress__mark').on('click', async () => {
-			await increment(this.object, 1)
-			this.render()
-		})
-		html.find('.ironsworn__progress__unmark').on('click', async () => {
-			await increment(this.object, -1)
-			this.render()
-		})
-		html.find('.ironsworn__progress__roll').on('click', async () => {
-			const { filledBoxes } = await this.getData()
-			IronswornPrerollDialog.showForProgress(
-				this.object.name ?? '(progress)',
-				filledBoxes
-			)
-		})
+	}
+
+	static async markProgress(this: any) {
+		await increment(this.page, 1)
+	}
+
+	static async unmarkProgress(this: any) {
+		await increment(this.page, -1)
+	}
+
+	static rollProgress(this: any) {
+		const filledBoxes = Math.floor((this.page.system.ticks ?? 0) / 4)
+		IronswornPrerollDialog.showForProgress(
+			this.page.name ?? '(progress)',
+			filledBoxes
+		)
 	}
 }
 
-function increment(object: any, direction: 1 | -1) {
+function increment(page: any, direction: 1 | -1) {
 	const rank: ChallengeRank.Value =
-		object.system.rank ?? ChallengeRank.RANK.Troublesome
-	const increment = RANK_INCREMENTS[rank]
-	const currentValue = object.system.ticks || 0
-	const newValue = currentValue + increment * direction
-	return object.update({
+		page.system.rank ?? ChallengeRank.RANK.Troublesome
+	const incrementBy = RANK_INCREMENTS[rank]
+	const currentValue = page.system.ticks || 0
+	const newValue = currentValue + incrementBy * direction
+	return page.update({
 		system: { ticks: Math.min(Math.max(newValue, 0), 40) }
 	})
 }

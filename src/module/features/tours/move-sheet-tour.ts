@@ -4,7 +4,7 @@ import { IronswornTour } from './ironsworn_tour'
 
 export class MoveSheetTour extends IronswornTour {
 	constructor(sheet: Application) {
-		const sheetSel = `.app[data-appid="${sheet?.appId}"]`
+		const sheetSel = (sheet as any)?.element?.id ? `#${(sheet as any).element.id}` : `.app[data-appid="${(sheet as any)?.appId}"]`
 
 		// If multiple rulesets are enabled, prioritize Ironsworn because those items will be nearer the top
 		const preferIronsworn =
@@ -31,7 +31,7 @@ export class MoveSheetTour extends IronswornTour {
 			: 'oracle_rollable:starforged/core/action'
 		const oracleRowSelector = `${sheetSel} [data-tourid="oracle-${oracleRow}"]`
 
-		const scrollIntoView = async (selector) => {
+		const scrollIntoView = async (selector: string) => {
 			const el = document.querySelector(selector)
 			console.log(`Scrolling to ${selector}`, el)
 			el?.scrollIntoView()
@@ -39,6 +39,8 @@ export class MoveSheetTour extends IronswornTour {
 		}
 
 		super({
+			id: 'move-sheet',
+			namespace: 'foundry-ironsworn',
 			title: 'IRONSWORN.Tours.MoveSheet.Title',
 			description: 'IRONSWORN.Tours.MoveSheet.Description',
 			canBeResumed: false,

@@ -1,3 +1,4 @@
+<form class='first-start-content'>
 <style>
 	.first-start-content {
 		margin: 0 1rem 1rem 1rem
@@ -29,9 +30,36 @@
 		width: inherit;
 		height: inherit;
 	}
-</style>
 
-<form class='first-start-content'>
+	.first-start-content input[type='radio'] {
+		position: relative;
+	}
+
+	.first-start-content input[type='radio']:not(:checked)::before {
+		content: "\f111" !important;
+		font-family: var(--font-awesome) !important;
+		font-weight: 400 !important;
+		color: var(--checkbox-background-color) !important;
+		position: absolute !important;
+		display: block !important;
+	}
+
+	.first-start-content input[type='radio']:checked::before {
+		position: absolute !important;
+		color: var(--checkbox-background-color) !important;
+	}
+
+	.first-start-content input[type='radio']:checked::after {
+		position: absolute !important;
+		color: var(--checkbox-checked-color) !important;
+	}
+
+	.first-start-content p:has(input[type='radio']) {
+		display: flex;
+		align-items: center;
+		gap: 0.4rem;
+	}
+</style>
 
 	<div class='flexcol'>
 		<h2>{{localize 'IRONSWORN.First Start.SheetTitle'}}</h2>
@@ -132,7 +160,7 @@
 
 
 	<div class='flexcol' style='margin-top: 1em;'>
-		<button class='clickable block boxgroup box ironsworn__save' style='flex: 1; justify-content: center; width: 100%'>
+		<button type='button' class='clickable block boxgroup box ironsworn__save' style='flex: 1; justify-content: center; width: 100%'>
 			<i class='fas fa-feather'></i>
 			{{localize 'Save'}}
 		</button>

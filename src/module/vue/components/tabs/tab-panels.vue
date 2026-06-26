@@ -35,6 +35,8 @@ defineExpose({
 .tabPanels {
 	// ensures that the TabPanels have a recent ancestor for their absolute positioning.
 	position: relative;
+	flex: 1 1 0;
+	min-height: 0;
 }
 
 .tabPanelsHorizontal {

@@ -2,13 +2,14 @@
 	<SheetBasic :document="data.actor" body-class="flexcol">
 		<TabSet
 			:id="`${data.actor._id}-starship-sheet`"
-			:tab-keys="['assets', 'notes']">
+			:tab-keys="['assets', 'notes']"
+			:class="$style.tabSet">
 			<TabList>
 				<Tab tab-key="assets" :text="$t('IRONSWORN.ITEMS.TypeAsset')" />
 				<Tab tab-key="notes" :text="$t('Notes')" />
 			</TabList>
 			<TabPanels>
-				<TabPanel tab-key="assets" class="flexcol">
+				<TabPanel tab-key="assets" :class="[$style.assetsPanel, 'flexcol']">
 					<PlayerAssets :class="$style.assets" />
 				</TabPanel>
 				<TabPanel tab-key="notes" class="flexcol">
@@ -55,7 +56,19 @@ provide(ActorKey, computed(() => props.data.actor) as any)
 </script>
 
 <style lang="scss" module>
+.tabSet {
+	flex: 1 1 0;
+	min-height: 0;
+}
+
+.assetsPanel {
+	flex: 1 1 0;
+	min-height: 0;
+}
+
 .assets {
+	flex: 1 1 0;
+	min-height: 0;
 	padding-top: var(--ironsworn-spacer-md);
 }
 

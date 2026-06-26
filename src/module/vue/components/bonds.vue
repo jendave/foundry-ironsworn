@@ -46,5 +46,6 @@ const $bonds = computed(
 <style lang="scss" scoped>
 h4 {
 	text-transform: uppercase;
+	font-size: var(--font-size-16);
 }
 </style>

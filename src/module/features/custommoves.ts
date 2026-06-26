@@ -57,11 +57,12 @@ export async function createMoveTreeForRuleset(
 			color: cat.color ?? MoveCategoryColor[cat.name] ?? null,
 			displayName: game.i18n.localize(`IRONSWORN.MOVES.${cat.name}`),
 			ds: cat,
-			moves: Object.values(cat.contents).map((move) => {
+			moves: Object.values(cat.contents).flatMap((move) => {
 				const indexEntry = index.contents.find(
 					(x) => x.flags['foundry-ironsworn']?.dsid === move._id
 				)
-				return {
+				if (!indexEntry) return []
+				return [{
 					color: move.color ?? null,
 					displayName: indexEntry.name,
 					uuid: indexEntry.uuid, // TODO: move.uuid
@@ -69,7 +70,7 @@ export async function createMoveTreeForRuleset(
 					isRollable: moveTriggerIsRollable(indexEntry?.system?.Trigger),
 					oracles: indexEntry.system?.dsOracleIds ?? [],
 					ds: move
-				}
+				}]
 			})
 		}))
 	}

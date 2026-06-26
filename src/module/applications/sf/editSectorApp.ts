@@ -2,34 +2,27 @@ import { IronswornSettings } from '../../helpers/settings'
 import editSectorVue from '../../vue/edit-sector.vue'
 import { VueAppMixin } from '../../vue/vueapp.js'
 
-export class EditSectorDialog extends VueAppMixin(Application) {
+const { ApplicationV2 } = foundry.applications.api
+
+export class EditSectorDialog extends VueAppMixin(ApplicationV2) {
 	constructor(protected sceneId: string) {
-		super()
+		super({})
 	}
 
-	static get defaultOptions() {
-		let titleKey = 'IRONSWORN.SCENE.TypeSector'
+	static get DEFAULT_OPTIONS() {
+		let title = game.i18n.localize('IRONSWORN.SCENE.TypeSector')
 		if (IronswornSettings.enabledRulesets.includes('sundered_isles')) {
-			titleKey = 'IRONSWORN.SCENE.TypeChart'
+			title = game.i18n.localize('IRONSWORN.SCENE.TypeChart')
 		}
-		return foundry.utils.mergeObject(super.defaultOptions, {
-			title: game.i18n.localize(titleKey),
+		return {
 			id: 'edit-sector-dialog',
-			resizable: true,
-			left: 115,
-			top: 60,
-			width: 400,
-			height: 200,
-			rootComponent: editSectorVue
-		}) as any
+			window: { title, resizable: true },
+			position: { left: 115, top: 60, width: 400, height: 200 },
+			rootComponent: editSectorVue,
+		}
 	}
 
-	getData(
-		options?: Partial<ApplicationOptions> | undefined
-	): MaybePromise<object> {
-		return {
-			...super.getData(options),
-			sceneId: this.sceneId
-		}
+	async _getVueData(): Promise<object> {
+		return { sceneId: this.sceneId }
 	}
 }

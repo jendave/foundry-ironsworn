@@ -2,12 +2,9 @@ import { VueActorSheet } from '../../vue/vueactorsheet'
 import siteSheetVue from '../../vue/site-sheet.vue'
 
 export class IronswornSiteSheet extends VueActorSheet {
-	static get defaultOptions() {
-		return foundry.utils.mergeObject(super.defaultOptions, {
-			width: 750,
-			height: 700,
-			rootComponent: siteSheetVue
-		}) as any
+	static DEFAULT_OPTIONS = {
+		position: { width: 750, height: 700 },
+		rootComponent: siteSheetVue,
 	}
 
 	async _onDropItem(event: DragEvent, data: ActorSheet.DropData.Item) {

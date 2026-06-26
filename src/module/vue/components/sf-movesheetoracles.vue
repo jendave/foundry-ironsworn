@@ -151,6 +151,9 @@ CONFIG.IRONSWORN.emitter.on('highlightOracle', async (dsid) => {
 
 .list {
 	padding: 0 var(--ironsworn-spacer-lg);
+	--ironsworn-color-clickable-text: var(--ironsworn-color-fg);
+	--ironsworn-color-clickable-text-hover: var(--ironsworn-color-fg-warm);
+	color: var(--ironsworn-color-fg);
 }
 
 .h4 {
@@ -159,5 +162,6 @@ CONFIG.IRONSWORN.emitter.on('highlightOracle', async (dsid) => {
 	text-transform: uppercase;
 	border-width: 2px 0;
 	border-style: solid;
+	color: var(--ironsworn-color-fg);
 }
 </style>

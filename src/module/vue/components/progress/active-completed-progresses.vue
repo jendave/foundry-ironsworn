@@ -1,5 +1,5 @@
 <template>
-	<article class="flexcol">
+	<article class="flexcol" :class="$style.wrapper">
 		<DropTarget
 			:is="ProgressList"
 			drop-type="progress"
@@ -7,6 +7,7 @@
 			:excluded-subtypes="excludedSubtypes"
 			:progress-stars="progressStars"
 			:show-completed="'no-completed'"
+			:class="$style.list"
 		/>
 		<ProgressControls class="nogrow" />
 		<CompletedProgressList
@@ -35,3 +36,16 @@ defineProps<{
 	compactProgress?: boolean
 }>()
 </script>
+
+<style lang="scss" module>
+.wrapper {
+	flex: 1 1 0;
+	min-height: 0;
+}
+
+.list {
+	flex: 1 1 0;
+	min-height: 0;
+	overflow-y: auto;
+}
+</style>

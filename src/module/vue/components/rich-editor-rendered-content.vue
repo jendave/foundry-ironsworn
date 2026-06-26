@@ -1,13 +1,10 @@
 <template>
-	<div class="editor flexcol">
+	<div class="editor flexcol" style="cursor: pointer;" @click="$emit('editclick')">
 		<WithRolllisteners
 			element="div"
 			class="editor-content"
-			v-html="renderedContent"
+			v-html="renderedContent || placeholder"
 		/>
-		<a class="editor-edit">
-			<i class="fas fa-edit" @click="$emit('editclick')"></i>
-		</a>
 	</div>
 </template>
 
@@ -19,6 +16,7 @@ import WithRolllisteners from './with-rolllisteners.vue'
 
 const props = defineProps<{
 	text: string
+	placeholder?: string
 }>()
 defineEmits(['editclick'])
 

@@ -3,6 +3,44 @@
 // Common CSS custom properties are coralled in their own file.
 @import 'custom-properties.less';
 
+// Foundry caps .application max-height to (100vh - hotbar); remove that for
+// our resizable windows so they can fill the full browser height.
+.application.ironsworn {
+	max-height: 100vh;
+}
+
+// Foundry v13 sets appearance:none on radio inputs inside @layer elements.forms,
+// then renders them via ::before pseudo-elements with Font Awesome glyphs.
+// Ironsworn's unlayered color variable overrides beat the layer, breaking the
+// ::before rendering. Revert to native appearance so buttons are always visible.
+.application.ironsworn input[type='radio'] {
+	position: relative;
+	width: var(--checkbox-size, 1.25rem) !important;
+	height: var(--checkbox-size, 1.25rem) !important;
+	// Unchecked: FA Regular outline circle, colored by theme
+	&:not(:checked)::before {
+		content: "\f111" !important;
+		font-family: var(--font-awesome) !important;
+		font-weight: 400 !important;
+		color: var(--checkbox-background-color) !important;
+		position: absolute !important;
+		display: block !important;
+	}
+	// Checked: let Foundry's @layer handle content/font, just fix position and color
+	&:checked {
+		position: relative;
+		&::before {
+			position: absolute !important;
+			color: var(--checkbox-background-color) !important;
+		}
+		&::after {
+			position: absolute !important;
+			color: var(--checkbox-checked-color) !important;
+		}
+	}
+}
+
+
 // :where is a zero-specificity selector, used here so that it's not impossible for components to override global styles
 // https://developer.mozilla.org/en-US/docs/Web/CSS/:where
 :where(.ironsworn) {
@@ -27,6 +65,17 @@
 		.flexrow {
 			display: flex;
 			align-items: initial;
+		}
+
+		// Foundry's base stylesheet grows `.flexrow` children by default but sets
+		// `.flexcol > * { flex: none }`, overriding the latter to `flex: 1` only
+		// under the ApplicationV1 `.app` frame. ApplicationV2 sheets use
+		// `.application`, so restore just that flexcol grow behaviour the Vue
+		// layouts were authored against (e.g. the notes editor and its ancestor
+		// containers filling their panel). Components opt out with `.nogrow`/
+		// `.noflex` (or higher-specificity rules, like the tab nav), as under V1.
+		.flexcol > * {
+			flex: 1;
 		}
 
 		h5 {
@@ -80,6 +129,10 @@
 			padding: var(--ironsworn-spacer-sm);
 			height: 100%;
 			color: var(--ironsworn-color-fg);
+
+			h1, h2, h3, h4, h5, h6 {
+				color: var(--ironsworn-color-fg);
+			}
 		}
 
 		hr {

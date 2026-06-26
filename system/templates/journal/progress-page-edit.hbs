@@ -1,12 +1,8 @@
-<form class="{{cssClass}} ironsworn flexcol progress-list-item" autocomplete="off">
-  {{> journalEntryPageHeader}}
-
-  <section class="flexcol" style="margin: 1em; gap: var(--ironsworn-spacer-md)">
-    <div class="flexrow nogrow" style="gap: 1em">
-      {{> rankPips}}
-      <h4 style='margin: var(--ironsworn-spacer-xs);'>{{currentRank}}</h4>
-      {{> progressButtons}}
-    </div>
-    {{> progressBoxes}}
-  </section>
-</form>
+<section class="ironsworn flexcol progress-list-item" style="margin: 1em; gap: var(--ironsworn-spacer-md)">
+  <div class="flexrow nogrow" style="gap: 1em">
+    {{> rankPips}}
+    <h4 style='margin: var(--ironsworn-spacer-xs);'>{{currentRank}}</h4>
+    {{> progressButtons}}
+  </div>
+  {{> progressBoxes}}
+</section>

@@ -1,15 +1,16 @@
 import { VueAppMixin } from '../vue/vueapp'
 import OracleWindowComponent from '../vue/oracle-window.vue'
 
-export class OracleWindow extends VueAppMixin(Application) {
-	static get defaultOptions() {
-		return foundry.utils.mergeObject(super.defaultOptions, {
-			title: game.i18n.localize('IRONSWORN.ROLLTABLES.TypeOracle'),
-			id: 'oracles',
+const { ApplicationV2 } = foundry.applications.api
+
+export class OracleWindow extends VueAppMixin(ApplicationV2) {
+	static DEFAULT_OPTIONS = {
+		id: 'oracles',
+		window: {
+			title: 'IRONSWORN.ROLLTABLES.TypeOracle',
 			resizable: true,
-			width: 350,
-			height: 400,
-			rootComponent: OracleWindowComponent
-		}) as any
+		},
+		position: { width: 350, height: 400 },
+		rootComponent: OracleWindowComponent,
 	}
 }
