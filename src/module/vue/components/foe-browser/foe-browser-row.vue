@@ -126,7 +126,7 @@ function dragEnd() {
 		transition: inherit;
 		margin: 0;
 		text-transform: uppercase;
-		line-height: 1;
+		line-height: 2;
 		word-spacing: var(--ironsworn-word-spacing-sm);
 		letter-spacing: var(--ironsworn-letter-spacing-sm);
 		font-size: var(--font-size-14);

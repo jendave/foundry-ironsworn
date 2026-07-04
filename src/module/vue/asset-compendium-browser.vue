@@ -69,7 +69,6 @@ h1 {
 	margin: 0;
 	border: none;
 	height: min-content;
-	line-height: 1.5;
 	text-transform: uppercase;
 	color: var(--ironsworn-color-fg);
 }

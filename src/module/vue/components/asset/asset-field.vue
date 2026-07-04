@@ -54,13 +54,11 @@ function update(_: FocusEvent) {
 </script>
 <style lang="scss" module>
 .wrapper {
-	--form-field-height: 1.35em;
 	gap: var(--ironsworn-spacer-sm);
 	align-items: flex-end;
 	border-bottom-width: var(--ironsworn-border-width-md);
 	border-bottom-style: solid;
 	border-bottom-color: var(--ironsworn-color-thematic);
-	line-height: 1;
 
 	margin: 0;
 	padding: 0;
@@ -76,15 +74,11 @@ function update(_: FocusEvent) {
 }
 
 .inputWrapper {
-	height: var(--form-field-height);
-	line-height: 1;
-	font-size: 110%;
 }
 
 .value {
 	flex-grow: 1;
 	margin: 0;
-	padding: calc(var(--form-field-height) - 1em) var(--ironsworn-spacer-sm) 0 !important;
 	height: 100% !important;
 	border-bottom: 0 !important;
 	border-radius: 0 !important;

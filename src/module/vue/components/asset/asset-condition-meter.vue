@@ -88,20 +88,19 @@ async function toggleCondition(idx: number) {
 }
 
 .condition {
-	--ironsworn-checkbox-size: 12px;
+	--checkbox-size: 12px;
 
-	flex-basis: var(--ironsworn-checkbox-size);
-	margin: var(--ironsworn-border-width-md) 0;
-	line-height: var(--ironsworn-checkbox-size);
+	flex-basis: var(--checkbox-size);
+	line-height: var(--checkbox-size);
 	white-space: nowrap;
-	font-size: x-small;
+	font-size: var(--checkbox-size);
 
 	input[type='checkbox'] {
-		flex: 0 0 var(--ironsworn-checkbox-size);
+		flex: 0 0 var(--checkbox-size);
 		margin: 0 var(--ironsworn-spacer-sm);
-		width: var(--ironsworn-checkbox-size);
-		height: var(--ironsworn-checkbox-size);
-		vertical-align: bottom;
+		width: var(--checkbox-size);
+		height: var(--checkbox-size);
+		vertical-align: middle;
 	}
 }
 </style>
