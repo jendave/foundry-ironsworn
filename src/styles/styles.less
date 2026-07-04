@@ -52,12 +52,8 @@
 		.dialog();
 	}
 
-	form button,
-	button {
-		margin: 0;
-		border: 0 solid var(--ironsworn-color-border);
-		width: auto;
-		line-height: var(--ironsworn-line-height);
+	.controls-dropdown {
+		z-index: 50;
 	}
 
 	:where(.window-content) {
@@ -88,7 +84,6 @@
 
 .system-foundry-ironsworn {
 	// importing within this selector to ensure higher specificity
-	@import 'attr-box.less';
 	@import 'chat-message.less';
 	@import 'clickable.less';
 	@import 'dialog.less';
@@ -132,6 +127,7 @@
 
 			h1, h2, h3, h4, h5, h6 {
 				color: var(--ironsworn-color-fg);
+				font-family: Signika, sans-serif;
 			}
 		}
 

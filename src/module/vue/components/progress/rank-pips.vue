@@ -123,6 +123,7 @@ function setRank(rank: number) {
 	display: grid;
 	box-shadow: none !important;
 	background: none;
+	border: none;
 	// use padding isntead of margins for one continuous surface -- avoids hover flicker
 	padding: v-bind(pipPadding);
 	width: max-content;

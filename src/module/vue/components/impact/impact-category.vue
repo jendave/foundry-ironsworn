@@ -53,6 +53,6 @@ const baseId = computed(() => `impacts_${props.name}_${actor.value._id}`)
 	margin: 0;
 	text-transform: uppercase;
 	font-weight: bold;
-	font-size: var(--font-size-16);
+	font-size: var(--font-size-14);
 }
 </style>

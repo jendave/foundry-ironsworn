@@ -4,11 +4,22 @@
 
 .dialog {
 	.window-content {
+		button {
+			.clickableBlockMixin();
+			border-width: 1px;
+		}
+
 		.dialog-content {
 			fieldset {
 				border: none;
 				border-radius: var(--ironsworn-border-radius-md);
 				background-color: var(--ironsworn-color-fg-10);
+				padding: 3px;
+				margin: 2px;
+			}
+
+			label {
+				color: var(--ironsworn-color-fg);
 			}
 
 			details {

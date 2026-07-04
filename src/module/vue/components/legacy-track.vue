@@ -174,7 +174,7 @@ function decrease() {
 		grid-column: 1;
 		margin: 0;
 		text-transform: uppercase;
-		line-height: 1.2;
+		line-height: 2;
 		letter-spacing: 0.02em;
 		font-weight: bold;
 		font-size: var(--font-size-16);

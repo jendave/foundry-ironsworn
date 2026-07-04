@@ -63,6 +63,7 @@ textarea {
 	resize: none;
 	font-family: var(--font-primary);
 	font-size: inherit;
+	line-height: 1;
 }
 
 textarea {

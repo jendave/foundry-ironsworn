@@ -144,7 +144,7 @@ function toggleStar() {
 	--ironsworn-progress-widget-spacing: 6px;
 
 	display: grid;
-	grid-template-rows: max-content max-content 1fr;
+	grid-template-rows: 18px 18px 1fr;
 	grid-template-columns: max-content max-content 1fr max-content;
 	gap: var(--ironsworn-progress-widget-spacing);
 	padding: calc(var(--ironsworn-progress-widget-spacing) / 2)
@@ -169,6 +169,7 @@ function toggleStar() {
 		margin: 0;
 		height: max-content;
 		line-height: 1;
+		font-size: 14px;
 	}
 
 	.progress-subtitle {

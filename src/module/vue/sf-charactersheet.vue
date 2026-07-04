@@ -22,6 +22,7 @@
 				<div
 					id="stats"
 					class="flexrow stats"
+					:class="$style.stats"
 					style="margin-bottom: var(--ironsworn-spacer-xl)"
 					data-tooltip-direction="UP"
 					data-tourid="stats">
@@ -135,6 +136,10 @@ provide(ActorKey, computed(() => props.data.actor) as any)
 .center {
 	flex: 1 1 0;
 	min-height: 0;
+}
+.stats {
+	flex: 0 !important;
+	justify-content: space-around;
 }
 .conditionMeters {
 	align-self: flex-start;
