@@ -41,6 +41,10 @@ function setXp(n) {
 	flex-grow: 0;
 	align-items: center;
 
+	h4 {
+		align-self: center;
+	}
+
 	.xp-box {
 		box-sizing: border-box;
 		display: flex;

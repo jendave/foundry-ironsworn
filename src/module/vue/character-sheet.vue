@@ -113,6 +113,11 @@ provide(
 	gap: var(--ironsworn-spacer-xl);
 }
 
+.stats {
+	flex: 0 !important;
+	justify-content: space-around;
+}
+
 .stat-roll {
 	text-transform: uppercase;
 }

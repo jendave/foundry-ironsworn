@@ -53,6 +53,7 @@ function rangeString({ low, high }: LegacyTableRow) {
 caption,
 th {
 	text-align: left;
+	color: var(--ironsworn-color-light);
 }
 
 th,

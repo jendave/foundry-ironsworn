@@ -73,9 +73,6 @@ function update(_: FocusEvent) {
 	pointer-events: none;
 }
 
-.inputWrapper {
-}
-
 .value {
 	flex-grow: 1;
 	margin: 0;

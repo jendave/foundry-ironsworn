@@ -30,9 +30,9 @@
 
 	h1.charname {
 		flex-grow: 1;
-		margin: 0;
-		border-bottom: 0;
+		margin: 0 !important;
 		padding: 0;
+		border: none;
 		height: var(--ironsworn-title-height);
 
 		input {
