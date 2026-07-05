@@ -3,13 +3,14 @@
 ## Next Release
 
 - Fixes by [@jendave](https://github.com/jendave):
-  - Remove warnings from system.json ([#1080](https://github.com/ben/foundry-ironsworn/pull/1080))
-  - Token HUD error ([#1082](https://github.com/ben/foundry-ironsworn/pull/1082))
-  - Fix for rerolls from chat card ([#1084](https://github.com/ben/foundry-ironsworn/pull/1084))
+  - Remove warnings from system.json ([#1080](https://github.com/ben/foundry-ironsworn/pull/1080)).
+  - Token HUD error ([#1082](https://github.com/ben/foundry-ironsworn/pull/1082)).
+  - Fix for rerolls from chat card ([#1084](https://github.com/ben/foundry-ironsworn/pull/1084)).
   - Migrated all sheets, dialogs, and windows to Foundry's ApplicationV2 framework, while maintaining compatibility with both Foundry v13 and v14.
   - Made updates to the Starforged character sheet layout to make it resize better and maintain consistency with the Ironsworn character sheet.
   - Resolved ApplicationV2 and DataField deprecation warnings.
-- Better use of name and/or description in oracle roll cards ([#1085](https://github.com/ben/foundry-ironsworn/pull/1085))
+- Better use of name and/or description in oracle roll cards ([#1085](https://github.com/ben/foundry-ironsworn/pull/1085)).
+- Add icons for Progress, Vow and Connection tracks ([#1088](https://github.com/ben/foundry-ironsworn/pull/1088)).
 
 ## 1.27.0
 
