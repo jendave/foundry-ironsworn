@@ -16,14 +16,16 @@ export interface VueApplicationOptions {
 
 export function VueAppMixin<TBase extends Constructor>(Base: TBase) {
 	const { HandlebarsApplicationMixin } = foundry.applications.api
-	const HandlebarsBase = HandlebarsApplicationMixin(Base)
+	const HandlebarsBase = HandlebarsApplicationMixin(
+		Base as unknown as AnyClassConstructor
+	)
 	abstract class VueMixin extends HandlebarsBase {
 		vueApp: App<Element> | undefined
 		vueRoot: ComponentPublicInstance | undefined
 		vueListenersActive = false
 		localEmitter: LocalEmitter = Mitt<LocalEmitterEvents>()
 
-		static DEFAULT_OPTIONS = {
+		static DEFAULT_OPTIONS: Record<string, any> = {
 			classes: ['ironsworn'],
 		}
 

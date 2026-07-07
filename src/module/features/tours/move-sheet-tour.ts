@@ -3,7 +3,7 @@ import { OracleTable } from '../../roll-table/oracle-table'
 import { IronswornTour } from './ironsworn_tour'
 
 export class MoveSheetTour extends IronswornTour {
-	constructor(sheet: Application) {
+	constructor(sheet: any) {
 		const sheetSel = (sheet as any)?.element?.id ? `#${(sheet as any).element.id}` : `.app[data-appid="${(sheet as any)?.appId}"]`
 
 		// If multiple rulesets are enabled, prioritize Ironsworn because those items will be nearer the top

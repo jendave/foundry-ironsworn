@@ -6,7 +6,7 @@ import { VueAppMixin } from './vueapp.js'
 export abstract class VueActorSheet extends VueAppMixin(
 	foundry.applications.sheets.ActorSheetV2 as any
 ) {
-	static DEFAULT_OPTIONS = {
+	static DEFAULT_OPTIONS: Record<string, any> = {
 		classes: ['ironsworn', 'actor'],
 		window: {
 			resizable: true,

@@ -5,7 +5,7 @@ import { VueAppMixin } from './vueapp.js'
 export abstract class VueItemSheet extends VueAppMixin(
 	foundry.applications.sheets.ItemSheetV2 as any
 ) {
-	static DEFAULT_OPTIONS = {
+	static DEFAULT_OPTIONS: Record<string, any> = {
 		classes: ['ironsworn', 'item'],
 		position: { width: 520, height: 480 },
 		window: {
