@@ -87,7 +87,7 @@ export class IronswornSettings {
 			label: 'IRONSWORN.Settings.ConfigurationDialog.Label',
 			icon: 'fas fa-cog',
 			hint: 'IRONSWORN.Settings.ConfigurationDialog.Hint',
-			type: FirstStartDialog,
+			type: FirstStartDialog as any,
 			restricted: true
 		})
 

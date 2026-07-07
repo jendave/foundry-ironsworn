@@ -1,14 +1,7 @@
 import type { InterpolationMode } from 'chroma-js'
-import type chroma from 'chroma-js'
-import * as Sass from 'sass'
+import type { Value } from 'sass'
 
-// Hack because the sass types package appears to be incorrect.
-export type SassLegacyValue<T extends Sass.LegacyValue> = T & {
-	dartValue: any
-	getValue: () => any
-}
-
-const COLOR_MODES: chroma.InterpolationMode[] = [
+const COLOR_MODES: InterpolationMode[] = [
 	'rgb',
 	'hsl',
 	'hsv',
@@ -20,38 +13,35 @@ const COLOR_MODES: chroma.InterpolationMode[] = [
 	'oklab',
 	'oklch'
 ]
+
 // HELPER FUNCTIONS: TYPECHECK SASS VALUES
-export function assertColor(obj: SassLegacyValue<Sass.types.Color>) {
-	if (!(obj instanceof Sass.types.Color)) {
-		throw new Sass.types.Error(`Expected SASS Color, received: ${obj}`)
-	}
+
+export function assertColor(obj: Value) {
+	return obj.assertColor()
 }
-export function assertNumber(obj: SassLegacyValue<Sass.types.Number>) {
-	if (!(obj instanceof Sass.types.Number)) {
-		throw new Sass.types.Error(`Expected SASS Number, received: ${obj}`)
-	}
+export function assertNumber(obj: Value) {
+	return obj.assertNumber()
 }
-export function assertList(obj: SassLegacyValue<Sass.types.List>) {
-	if (!(obj instanceof Sass.types.List)) {
-		throw new Sass.types.Error(`Expected SASS List, received: ${obj}`)
-	}
+export function assertList(obj: Value) {
+	// Every Sass value can be used as a list (see `Value.asList`), so there's
+	// nothing to assert here — this just documents intent at call sites.
+	return obj
 }
-export function assertString(obj: SassLegacyValue<Sass.types.String>) {
-	if (!(obj instanceof Sass.types.String)) {
-		throw new Sass.types.Error(`Expected SASS String, received: ${obj}`)
-	}
+export function assertString(obj: Value) {
+	return obj.assertString()
 }
-export function assertMode(obj: SassLegacyValue<Sass.types.String>) {
-	assertString(obj)
-	if (!COLOR_MODES.includes(obj?.getValue() as InterpolationMode)) {
-		throw new Sass.types.Error(
-			`Expected a chroma.js color interpolation mode, received: ${obj}`
+export function assertMode(obj: Value): string {
+	const mode = assertString(obj).text
+	if (!COLOR_MODES.includes(mode as InterpolationMode)) {
+		throw new Error(
+			`Expected a chroma.js color interpolation mode, received: ${mode}`
 		)
 	}
+	return mode
 }
-export function assertModeChannel(obj: SassLegacyValue<Sass.types.String>) {
-	assertString(obj)
-	const [mode, chan] = obj.getValue().split('.')
+export function assertModeChannel(obj: Value): string {
+	const value = assertString(obj).text
+	const [mode, chan] = value.split('.')
 
 	if (
 		// invalid color mode
@@ -59,8 +49,9 @@ export function assertModeChannel(obj: SassLegacyValue<Sass.types.String>) {
 		// invalid color channel for mode. 'a' (alpha channel) is always valid
 		(chan !== 'a' && !mode.includes(chan))
 	) {
-		throw new Sass.types.Error(
-			`Expected a chroma.js color interpolation mode and channel, received: ${obj}`
+		throw new Error(
+			`Expected a chroma.js color interpolation mode and channel, received: ${value}`
 		)
 	}
+	return value
 }

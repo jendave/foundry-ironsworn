@@ -13,10 +13,11 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 const PORT = 30000
 
-const sassOptions: Sass.LegacyStringOptions<'sync'> = {
-	functions: { ...sassChroma, ...sassIcons },
-	// @ts-expect-error
-	additionalData: ''
+const sassOptions: Sass.StringOptionsWithoutImporter<'sync'> & {
+	api: 'modern'
+} = {
+	api: 'modern',
+	functions: { ...sassChroma, ...sassIcons }
 }
 
 const config: UserConfig = {

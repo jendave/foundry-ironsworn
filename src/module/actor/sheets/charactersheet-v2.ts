@@ -37,7 +37,6 @@ export class IronswornCharacterSheetV2 extends VueActorSheet {
 	}
 
 	async _onFirstRender(context: object, options: object) {
-		// @ts-expect-error super._onFirstRender exists on V2 base
 		await super._onFirstRender?.(context, options)
 		this._openMoveSheet()
 	}

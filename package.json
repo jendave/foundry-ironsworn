@@ -44,6 +44,7 @@
 		"eslint-config-prettier": "^8.8.0",
 		"eslint-config-standard-with-typescript": "^43",
 		"eslint-plugin-vue": "^9.25.0",
+		"immutable": "^5.0.2",
 		"less": "^4.2.0",
 		"lodash-es": "^4.17.21",
 		"marked": "^5.1.0",

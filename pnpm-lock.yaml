@@ -91,6 +91,9 @@ importers:
       eslint-plugin-vue:
         specifier: ^9.25.0
         version: 9.33.0(eslint@8.57.1)
+      immutable:
+        specifier: ^5.0.2
+        version: 5.1.4
       less:
         specifier: ^4.2.0
         version: 4.5.1
@@ -574,23 +577,23 @@ packages:
       postcss: ^8.4
 
   '@datasworn/core@https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/core':
-    resolution: {path: pkg/nodejs/@datasworn/core, tarball: https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91}
+    resolution: {gitHosted: true, integrity: sha512-eEk2/ikdgzbr7ScPcvtCAYQhkpS+ChGqFD2OzAjyYVWLym4KhiYRCG/9m2NafveUQ6DPGIGvezUd8K9DDFGLTw==, tarball: https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91}
     version: 0.1.0
 
   '@datasworn/ironsworn-classic-delve@https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/ironsworn-classic-delve':
-    resolution: {path: pkg/nodejs/@datasworn/ironsworn-classic-delve, tarball: https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91}
+    resolution: {gitHosted: true, integrity: sha512-eEk2/ikdgzbr7ScPcvtCAYQhkpS+ChGqFD2OzAjyYVWLym4KhiYRCG/9m2NafveUQ6DPGIGvezUd8K9DDFGLTw==, tarball: https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91}
     version: 0.1.0
 
   '@datasworn/ironsworn-classic@https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/ironsworn-classic':
-    resolution: {path: pkg/nodejs/@datasworn/ironsworn-classic, tarball: https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91}
+    resolution: {gitHosted: true, integrity: sha512-eEk2/ikdgzbr7ScPcvtCAYQhkpS+ChGqFD2OzAjyYVWLym4KhiYRCG/9m2NafveUQ6DPGIGvezUd8K9DDFGLTw==, tarball: https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91}
     version: 0.1.0
 
   '@datasworn/starforged@https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/starforged':
-    resolution: {path: pkg/nodejs/@datasworn/starforged, tarball: https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91}
+    resolution: {gitHosted: true, integrity: sha512-eEk2/ikdgzbr7ScPcvtCAYQhkpS+ChGqFD2OzAjyYVWLym4KhiYRCG/9m2NafveUQ6DPGIGvezUd8K9DDFGLTw==, tarball: https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91}
     version: 0.1.0
 
   '@datasworn/sundered-isles@https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/sundered-isles':
-    resolution: {path: pkg/nodejs/@datasworn/sundered-isles, tarball: https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91}
+    resolution: {gitHosted: true, integrity: sha512-eEk2/ikdgzbr7ScPcvtCAYQhkpS+ChGqFD2OzAjyYVWLym4KhiYRCG/9m2NafveUQ6DPGIGvezUd8K9DDFGLTw==, tarball: https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91}
     version: 0.1.0
 
   '@esbuild/aix-ppc64@0.21.5':
@@ -784,7 +787,7 @@ packages:
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
   '@league-of-foundry-developers/foundry-vtt-types@https://codeload.github.com/rsek/foundry-vtt-types/tar.gz/cdfca0ebe5d84bf477a85e384107d9d49200f4d6':
-    resolution: {tarball: https://codeload.github.com/rsek/foundry-vtt-types/tar.gz/cdfca0ebe5d84bf477a85e384107d9d49200f4d6}
+    resolution: {gitHosted: true, integrity: sha512-DDQQh8waFU0e5i+gzetPFxZSsaybowt4Ut3pKL4vnM5EIA857WXv7vsY74h7fdRTtsF/ayoH8BJpuSoeDvvITw==, tarball: https://codeload.github.com/rsek/foundry-vtt-types/tar.gz/cdfca0ebe5d84bf477a85e384107d9d49200f4d6}
     version: 9.269.0
 
   '@mavrin/stylelint-declaration-use-css-custom-properties@3.0.1':

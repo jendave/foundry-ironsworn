@@ -1,13 +1,13 @@
 import { Expansion } from '@datasworn/core/dist/Datasworn'
 import { DataswornTree } from '../datasworn2'
 import { registerDefaultOracleTrees } from '../features/customoracles'
-import { IronswornSettings, RULESETS } from '../helpers/settings'
+import { DataswornRulesetKey, IronswornSettings, RULESETS } from '../helpers/settings'
 import { SFSettingTruthsDialogVue } from './vueSfSettingTruthsDialog'
 import { IronswornCharacterSheetV2 } from '../actor/sheets/charactersheet-v2'
 import { StarforgedCharacterSheet } from '../actor/sheets/sf-charactersheet'
 
 function getSheetId(sheetClass: new (...args: any[]) => any): string | undefined {
-	const sheets = (CONFIG as any).Actor?.sheetClasses?.character ?? {}
+	const sheets: Record<string, any> = (CONFIG as any).Actor?.sheetClasses?.character ?? {}
 	return Object.values(sheets).find((s: any) => s.cls === sheetClass)?.id as string | undefined
 }
 
@@ -96,7 +96,7 @@ export class FirstStartDialog extends HandlebarsApplicationMixin(ApplicationV2) 
 				// Update rulesets
 				const checkedRulesets = Array.from(
 					element.querySelectorAll<HTMLInputElement>('input.ruleset:checked')
-				).map((x) => x.value ?? '')
+				).map((x) => x.value ?? '') as DataswornRulesetKey[]
 				await IronswornSettings.enableOnlyRulesets(...checkedRulesets)
 
 				// If you chose SI, probably you want 'hold' enabled

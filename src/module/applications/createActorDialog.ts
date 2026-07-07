@@ -7,7 +7,7 @@ import { StarforgedCharacterSheet } from '../actor/sheets/sf-charactersheet'
 
 /** Look up the registered sheet ID for a given sheet class, so we never rely on the minified class name. */
 function getSheetId(sheetClass: new (...args: any[]) => any): string | undefined {
-	const sheets = (CONFIG as any).Actor?.sheetClasses?.character ?? {}
+	const sheets: Record<string, any> = (CONFIG as any).Actor?.sheetClasses?.character ?? {}
 	return Object.values(sheets).find((s: any) => s.cls === sheetClass)?.id as string | undefined
 }
 
@@ -241,7 +241,7 @@ export class CreateActorDialog extends HandlebarsApplicationMixin(ApplicationV2)
 		}
 		const actor = await IronswornActor.create(data)
 		await new Promise((resolve) => setTimeout(resolve, 50))
-		await actor?.sheet?.render({ force: true })
+		await (actor?.sheet as any)?.render({ force: true })
 		await (this as any).close()
 	}
 
