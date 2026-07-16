@@ -10,163 +10,145 @@ import { pickBy } from 'lodash-es'
 
 type Constructor<T = object> = abstract new (...args: any[]) => T
 
-export interface VueApplicationOptions extends ApplicationOptions {
+export interface VueApplicationOptions {
 	rootComponent: Component
 }
 
-export function VueAppMixin<TBase extends Constructor<Application>>(
-	Base: TBase
-) {
-	abstract class VueMixin extends Base {
+export function VueAppMixin<TBase extends Constructor>(Base: TBase) {
+	const { HandlebarsApplicationMixin } = foundry.applications.api
+	const HandlebarsBase = HandlebarsApplicationMixin(
+		Base as unknown as AnyClassConstructor
+	)
+	abstract class VueMixin extends HandlebarsBase {
 		vueApp: App<Element> | undefined
 		vueRoot: ComponentPublicInstance | undefined
 		vueListenersActive = false
 		localEmitter: LocalEmitter = Mitt<LocalEmitterEvents>()
 
-		static get defaultOptions(): VueApplicationOptions {
-			return foundry.utils.mergeObject(
-				// @ts-expect-error TS complains about super not having defaultOptions here, but Application does have it -- just on the class, not the constructor.
-				super.defaultOptions as ApplicaionOptions,
-				{
-					classes: ['ironsworn'],
-					template: 'systems/foundry-ironsworn/templates/vue-app.hbs',
-					submitOnClose: false,
-					submitOnChange: false
-				}
-			)
+		static DEFAULT_OPTIONS: Record<string, any> = {
+			classes: ['ironsworn'],
+		}
+
+		static PARTS = {
+			app: {
+				template: 'systems/foundry-ironsworn/templates/vue-app.hbs',
+			},
 		}
 
 		setupVueApp(_app: App): void {
 			// Implement in descendants if needed
 		}
 
-		async render(...renderArgs) {
-			const vueOptions = this.options as VueApplicationOptions
-			const data = await this.getData()
+		async _prepareContext(_options?: object): Promise<object> {
+			return (await super._prepareContext?.(_options)) ?? {}
+		}
 
-			// Create the Vue App instance
-			if (this.vueApp == null || this.vueRoot == null) {
-				const provides = pickBy(data, (v, k) => k.startsWith('$'))
-				this.localEmitter.on('closeApp', () => this.close())
+		async _getVueData(): Promise<object> {
+			return {}
+		}
 
-				this.vueRoot = undefined
-				this.vueApp = createApp({
-					components: {
-						'loading-spinner': LoadingSpinner,
-						'root-component': vueOptions.rootComponent
-					},
-					data() {
-						return { data }
-					},
+		// Prevent Handlebars from replacing the DOM on re-renders once Vue is mounted.
+		// Without this, every actor update destroys the Vue app's DOM nodes.
+		_replaceHTML(result: object, content: HTMLElement, options: object): void {
+			if (this.vueApp != null) return
+			super._replaceHTML?.(result, content, options)
+		}
 
-					provide: {
-						context: {
-							options: this.options,
-							themeClass: IronswornSettings.classes.join(' '),
-							config: CONFIG.IRONSWORN
-						},
-						[$LocalEmitterKey as symbol]: this.localEmitter,
-						...provides
-					},
+		async _onRender(context: object, options: object): Promise<void> {
+			await super._onRender?.(context, options)
 
-					methods: {
-						updateData(newCtx) {
-							for (const k of Object.keys(this.data)) {
-								this.data[k] = newCtx[k]
-							}
-						}
-					}
-				})
-				this.vueApp.use(IronswornVuePlugin)
-				this.setupVueApp(this.vueApp)
-			} else {
+			const element = this.element as HTMLElement
+
+			if (this.vueApp != null && this.vueRoot != null) {
+				// Already mounted — update reactive data
+				const data = await this._getVueData()
 				;(this.vueRoot as any).updateData(data)
 				if (!this.vueListenersActive) {
-					setTimeout(() => {
-						this.activateVueListeners($(this.element), true)
-					}, 150)
+					setTimeout(() => this._activateVueListeners(element, true), 150)
 				}
 				return
 			}
 
-			// Stop here if we're closing
-			if (this._state === Application.RENDER_STATES.CLOSING) return
+			const data = await this._getVueData()
+			const vueOptions = this.options as unknown as VueApplicationOptions
+			const provides = pickBy(data, (_v, k) => k.startsWith('$'))
+			this.localEmitter.on('closeApp', () => (this as any).close())
 
-			// No active Vue root, so run Foundry's render and mount it
-			try {
-				// Execute Foundry's render.
-				await this._render(...renderArgs)
+			this.vueRoot = undefined
+			this.vueApp = createApp({
+				components: {
+					'loading-spinner': LoadingSpinner,
+					'root-component': vueOptions.rootComponent,
+				},
+				data() {
+					return { data }
+				},
+				provide: {
+					context: {
+						options: this.options,
+						themeClass: IronswornSettings.classes.join(' '),
+						config: CONFIG.IRONSWORN,
+					},
+					[$LocalEmitterKey as symbol]: this.localEmitter,
+					...provides,
+				},
+				methods: {
+					updateData(newCtx: object) {
+						for (const k of Object.keys((this as any).data)) {
+							;(this as any).data[k] = (newCtx as any)[k]
+						}
+					},
+				},
+			})
+			this.vueApp.use(IronswornVuePlugin)
+			this.setupVueApp(this.vueApp)
 
-				// Run Vue's render, assign it to our prop for tracking.
-				const selector = `[data-appid="${this.appId}"] .vueroot`
-				const $appEl = $(selector)
-				if ($appEl.length > 0) {
-					this.vueRoot = this.vueApp.mount(selector)
-					setTimeout(() => {
-						this.activateVueListeners($(this.element), true)
-					}, 150)
-				}
-			} catch (err: any) {
-				this._state = Application.RENDER_STATES.ERROR
-				Hooks.onError('Application#render', err, {
-					msg: `An error occurred while rendering ${this.constructor.name} ${this.id}`,
-					log: 'error',
-					...renderArgs
-				})
-				console.error(
-					`An error occurred while rendering ${this.constructor.name} ${this.id}: ${err.message}`,
-					err
-				)
+			const vuerootEl = element.querySelector('.vueroot')
+			if (vuerootEl != null) {
+				this.vueRoot = this.vueApp.mount(vuerootEl as Element)
+				setTimeout(() => this._activateVueListeners(element, true), 150)
 			}
-
-			if (this instanceof FormApplication && this.object.apps) {
-				this.object.apps[this.appId] = this
-			}
-
-			return this
 		}
 
-		async close(options?: Application.CloseOptions | undefined) {
+		_onClose(options: object): void {
+			super._onClose?.(options)
 			this.vueApp?.unmount()
 			this.vueApp = undefined
 			this.vueRoot = undefined
-			await super.close(options)
 		}
 
 		/**
 		 * Activate additional listeners on the rendered Vue app.
 		 */
-		activateVueListeners(html: JQuery, repeat = false) {
-			this._dragHandler(html)
+		_activateVueListeners(element: HTMLElement, repeat = false) {
+			this._dragHandler(element)
 
 			// Place one-time executions after this line.
 			if (repeat) return
 
-			// Input listeners.
 			const inputs =
 				'.section input[type="text"], .section input[type="number"]'
-			html.on('focus', inputs, (event) => {
-				this._onFocus(event)
+			element.querySelectorAll<HTMLInputElement>(inputs).forEach((el) => {
+				el.addEventListener('focus', (event) => this._onFocus(event))
 			})
 		}
 
-		_onFocus(event: JQuery.FocusEvent) {
-			const target = event.currentTarget
+		_onFocus(event: FocusEvent) {
+			const target = event.currentTarget as HTMLInputElement | null
 			setTimeout(() => {
-				if (target && target == document.activeElement) {
-					$(target).trigger('select')
-				}
+				if (target && target === document.activeElement) target.select()
 			}, 100)
 		}
 
-		_dragHandler(html: JQuery) {
-			const dragHandler = (event: DragEvent) => {
-				this._onDragStart(event)
-			}
-			html.find('.item[data-draggable="true"]').each((i, li) => {
-				li.setAttribute('draggable', 'true') // this apparently requires a string, rather than a boolean
-				li.addEventListener('dragstart', dragHandler, false)
-			})
+		_dragHandler(element: HTMLElement) {
+			const dragHandler = (event: DragEvent) =>
+				(this as any)._onDragStart(event)
+			element
+				.querySelectorAll<HTMLElement>('.item[data-draggable="true"]')
+				.forEach((li) => {
+					li.setAttribute('draggable', 'true')
+					li.addEventListener('dragstart', dragHandler, false)
+				})
 		}
 	}
 	return VueMixin

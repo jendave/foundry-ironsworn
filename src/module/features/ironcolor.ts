@@ -1,4 +1,6 @@
+import { kebabCase } from 'lodash-es'
 import { IronswornSettings } from '../helpers/settings'
+import * as IronTheme from './irontheme'
 
 import '../../styles/styles.less'
 import '../../styles/_irontheme.scss'
@@ -8,8 +10,26 @@ import '../../styles/_ironcolor/oceanic.scss'
 
 export const PREFIX = 'ironcolor__'
 
+const THEME_COLOR_MAP: Record<string, string> = {
+	ironsworn: 'zinc',
+	starforged: 'phosphor',
+	sunderedisles: 'oceanic',
+}
+
 export function colorSchemeSetup() {
-	$(document.body).addClass(IronswornSettings.classes.join(' '))
+	// Mark the body with the Foundry generation so CSS can target v13 vs v14.
+	document.body.classList.add(`foundry-v${game.release.generation}`)
+
+	// Sync the color scheme to match the world theme so that changing "Theme"
+	// (which requires reload) also changes the color palette.
+	const theme = IronswornSettings.get('theme')
+	const colorForTheme = THEME_COLOR_MAP[theme] as
+		| ClientSettings.Values['foundry-ironsworn.color-scheme']
+		| undefined
+	const colorScheme = colorForTheme ?? IronswornSettings.get('color-scheme')
+
+	document.body.classList.add(`${IronTheme.PREFIX}${kebabCase(theme)}`)
+	document.body.classList.add(`${PREFIX}${colorScheme}`)
 }
 
 /**
@@ -25,7 +45,7 @@ export function updateColorScheme(
 
 	const classesToRemove = colorSchemes.map((str) => `${PREFIX}${str}`)
 
-	const toUpdate = [document.body]
+	const toUpdate: HTMLElement[] = [document.body]
 
 	// FVTT module: PopOut!
 	if (game.modules.get('popout')?.active != null) {
@@ -39,7 +59,8 @@ export function updateColorScheme(
 			}
 		}
 	}
-	$(toUpdate)
-		.removeClass(classesToRemove.join(' '))
-		.addClass(`${PREFIX}${newColorScheme}`)
+	for (const el of toUpdate) {
+		for (const cls of classesToRemove) el.classList.remove(cls)
+		el.classList.add(`${PREFIX}${newColorScheme}`)
+	}
 }

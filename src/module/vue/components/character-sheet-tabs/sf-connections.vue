@@ -27,6 +27,7 @@ async function newConnection() {
 		{
 			name: game.i18n.localize('IRONSWORN.ITEM.SubtypeConnection'),
 			type: 'progress',
+			img: 'systems/foundry-ironsworn/assets/icons/shaking-hands.svg',
 			system: { subtype: 'bond' },
 			sort: 9000000
 		},

@@ -3,10 +3,14 @@
 ## Next Release
 
 - Fixes by [@jendave](https://github.com/jendave):
-  - Remove warnings from system.json ([#1080](https://github.com/ben/foundry-ironsworn/pull/1080))
-  - Token HUD error ([#1082](https://github.com/ben/foundry-ironsworn/pull/1082))
-  - Fix for rerolls from chat card ([#1084](https://github.com/ben/foundry-ironsworn/pull/1084))
-- Better use of name and/or description in oracle roll cards ([#1085](https://github.com/ben/foundry-ironsworn/pull/1085))
+  - Remove warnings from system.json ([#1080](https://github.com/ben/foundry-ironsworn/pull/1080)).
+  - Token HUD error ([#1082](https://github.com/ben/foundry-ironsworn/pull/1082)).
+  - Fix for rerolls from chat card ([#1084](https://github.com/ben/foundry-ironsworn/pull/1084)).
+  - Migrated all sheets, dialogs, and windows to Foundry's ApplicationV2 framework, while maintaining compatibility with both Foundry v13 and v14.
+  - Made updates to the Starforged character sheet layout to make it resize better and maintain consistency with the Ironsworn character sheet.
+  - Resolved ApplicationV2 and DataField deprecation warnings.
+- Better use of name and/or description in oracle roll cards ([#1085](https://github.com/ben/foundry-ironsworn/pull/1085)).
+- Add icons for Progress, Vow and Connection tracks ([#1088](https://github.com/ben/foundry-ironsworn/pull/1088)).
 
 ## 1.27.0
 
@@ -197,7 +201,7 @@ This is a major update that includes Sundered Isles content, but also brings alo
 
 ## 1.22.9
 
-- Fix a UI warning when randomizing Starforged truths ([#915]https://github.com/ben/foundry-ironsworn/pull/915)
+- Fix a UI warning when randomizing Starforged truths ([#915](https://github.com/ben/foundry-ironsworn/pull/915))
 - Fix some visual issues in the compact sheet ([#923](https://github.com/ben/foundry-ironsworn/pull/923))
 
 ## 1.22.8
@@ -206,7 +210,7 @@ This is a major update that includes Sundered Isles content, but also brings alo
 
 ## 1.22.7
 
-- Fix PopOut! module windows missing custom icons ([#670]https://github.com/ben/foundry-ironsworn/issues/670)
+- Fix PopOut! module windows missing custom icons ([#670](https://github.com/ben/foundry-ironsworn/issues/670))
 
 ## 1.22.6
 

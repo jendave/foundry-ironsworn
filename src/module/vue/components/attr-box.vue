@@ -91,7 +91,6 @@ function decrement() {
 
 		transition: opacity var(--ironsworn-transition-timing);
 		opacity: 0;
-		z-index: 0;
 		padding: var(--ironsworn-spacer-sm);
 	}
 
@@ -109,9 +108,5 @@ function decrement() {
 		font-weight: bold;
 	}
 
-	& > * {
-		position: relative; // must be set to manipulate z-index
-		z-index: 1;
-	}
 }
 </style>

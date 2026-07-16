@@ -4,30 +4,25 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  '@datasworn/core': github:tbsvttr/datasworn#a537d6c467&path:pkg/nodejs/@datasworn/core
-  '@datasworn/starforged': github:tbsvttr/datasworn#a537d6c467&path:pkg/nodejs/@datasworn/starforged
-  '@datasworn/ironsworn-classic': github:tbsvttr/datasworn#a537d6c467&path:pkg/nodejs/@datasworn/ironsworn-classic
-
 importers:
 
   .:
     dependencies:
-      '@datasworn/core':
-        specifier: github:tbsvttr/datasworn#a537d6c467&path:pkg/nodejs/@datasworn/core
-        version: https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/core
-      '@datasworn/ironsworn-classic':
-        specifier: github:tbsvttr/datasworn#a537d6c467&path:pkg/nodejs/@datasworn/ironsworn-classic
-        version: https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/ironsworn-classic
-      '@datasworn/ironsworn-classic-delve':
-        specifier: github:tbsvttr/datasworn#a537d6c467&path:pkg/nodejs/@datasworn/ironsworn-classic-delve
-        version: https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/ironsworn-classic-delve
-      '@datasworn/starforged':
-        specifier: github:tbsvttr/datasworn#a537d6c467&path:pkg/nodejs/@datasworn/starforged
-        version: https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/starforged
-      '@datasworn/sundered-isles':
-        specifier: github:tbsvttr/datasworn#a537d6c467&path:pkg/nodejs/@datasworn/sundered-isles
-        version: https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/sundered-isles
+      '@datasworn-community/core':
+        specifier: ^0.2.9
+        version: 0.2.9
+      '@datasworn-community/ironsworn-classic':
+        specifier: ^0.2.2
+        version: 0.2.2
+      '@datasworn-community/ironsworn-classic-delve':
+        specifier: ^0.2.3
+        version: 0.2.3
+      '@datasworn-community/starforged':
+        specifier: ^0.2.2
+        version: 0.2.2
+      '@datasworn-community/sundered-isles':
+        specifier: ^0.2.2
+        version: 0.2.2
       '@foundryvtt/foundryvtt-cli':
         specifier: ^1.0
         version: 1.1.0
@@ -91,6 +86,9 @@ importers:
       eslint-plugin-vue:
         specifier: ^9.25.0
         version: 9.33.0(eslint@8.57.1)
+      immutable:
+        specifier: ^5.0.2
+        version: 5.1.4
       less:
         specifier: ^4.2.0
         version: 4.5.1
@@ -573,25 +571,20 @@ packages:
     peerDependencies:
       postcss: ^8.4
 
-  '@datasworn/core@https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/core':
-    resolution: {path: pkg/nodejs/@datasworn/core, tarball: https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91}
-    version: 0.1.0
+  '@datasworn-community/core@0.2.9':
+    resolution: {integrity: sha512-hj5SQHTxo1sm77ROLz6bZpkW8kF/D4kutk2R5LmcxHc2jiRnxjEoNFkOfSxpNL0/6inKa9NHeRxSwXyZM4a/Jg==}
 
-  '@datasworn/ironsworn-classic-delve@https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/ironsworn-classic-delve':
-    resolution: {path: pkg/nodejs/@datasworn/ironsworn-classic-delve, tarball: https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91}
-    version: 0.1.0
+  '@datasworn-community/ironsworn-classic-delve@0.2.3':
+    resolution: {integrity: sha512-K+OUtoTK5+C3K9Pr3LgKCTT1//G9LDlSZ5h0bShWV1/arveF2QXoxknX2b7puVxX0l3BiZXI0+RAcYAMCXeJmw==}
 
-  '@datasworn/ironsworn-classic@https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/ironsworn-classic':
-    resolution: {path: pkg/nodejs/@datasworn/ironsworn-classic, tarball: https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91}
-    version: 0.1.0
+  '@datasworn-community/ironsworn-classic@0.2.2':
+    resolution: {integrity: sha512-BJNbVWUJFTTv3k6rqqzcARdSL24gb/WgZpKIIjgiEP6YRHDJCZBIm2kpheCWJB/6LmTp7bM+DK58a48U4wU8JQ==}
 
-  '@datasworn/starforged@https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/starforged':
-    resolution: {path: pkg/nodejs/@datasworn/starforged, tarball: https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91}
-    version: 0.1.0
+  '@datasworn-community/starforged@0.2.2':
+    resolution: {integrity: sha512-K39HqzB2wmpYbTe6/tlKUrzCW/iLcE29+gNT9lIlFgzxV25aqJaNTuxo0rsZ3CGNIhslw1Zo3yMaIAM63msdwA==}
 
-  '@datasworn/sundered-isles@https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/sundered-isles':
-    resolution: {path: pkg/nodejs/@datasworn/sundered-isles, tarball: https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91}
-    version: 0.1.0
+  '@datasworn-community/sundered-isles@0.2.2':
+    resolution: {integrity: sha512-8gE4VD08Lv/MXHtJ8eCCLz4zgsrfTg9Mw8ftUU4Y9qXgJt2wfy1tbj2RVS30P0XDJOo2zA89UNwToZwwoBEGig==}
 
   '@esbuild/aix-ppc64@0.21.5':
     resolution: {integrity: sha512-1SDgH6ZSPTlggy1yI6+Dbkiz8xzpHJEVAlF/AM1tHPLsf5STom9rwtjE4hKAF20FfXXNTFqEYXyJNWh1GiZedQ==}
@@ -784,7 +777,7 @@ packages:
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
   '@league-of-foundry-developers/foundry-vtt-types@https://codeload.github.com/rsek/foundry-vtt-types/tar.gz/cdfca0ebe5d84bf477a85e384107d9d49200f4d6':
-    resolution: {tarball: https://codeload.github.com/rsek/foundry-vtt-types/tar.gz/cdfca0ebe5d84bf477a85e384107d9d49200f4d6}
+    resolution: {gitHosted: true, integrity: sha512-DDQQh8waFU0e5i+gzetPFxZSsaybowt4Ut3pKL4vnM5EIA857WXv7vsY74h7fdRTtsF/ayoH8BJpuSoeDvvITw==, tarball: https://codeload.github.com/rsek/foundry-vtt-types/tar.gz/cdfca0ebe5d84bf477a85e384107d9d49200f4d6}
     version: 9.269.0
 
   '@mavrin/stylelint-declaration-use-css-custom-properties@3.0.1':
@@ -931,6 +924,7 @@ packages:
 
   '@pixi/graphics-smooth@0.0.30':
     resolution: {integrity: sha512-9W/MBrjL5crqA7fEQHynvwXA15CiU9/SqWokr+SGMqsij1NepNLADDFXErScC2uBtt3ud407goBFA9PNXGmDkg==}
+    engines: {node: '>=14', npm: '>=7'}
     peerDependencies:
       '@pixi/constants': ^6.0.4
       '@pixi/core': ^6.0.4
@@ -1312,6 +1306,7 @@ packages:
 
   '@ungap/structured-clone@1.3.0':
     resolution: {integrity: sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g==}
+    deprecated: Potential CWE-502 - Update to 1.3.1 or higher
 
   '@vitejs/plugin-vue@5.2.4':
     resolution: {integrity: sha512-7Yx/SXSOcQq5HiiV3orevHUFn+pmMB4cgbEkDYgnkUWb0WfeQ/wa2yFv6D5ICiCQOVpjA7vYDXrC7AGO8yjDHA==}
@@ -5027,23 +5022,25 @@ snapshots:
     dependencies:
       postcss: 8.5.6
 
-  '@datasworn/core@https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/core': {}
+  '@datasworn-community/core@0.2.9': {}
 
-  '@datasworn/ironsworn-classic-delve@https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/ironsworn-classic-delve':
+  '@datasworn-community/ironsworn-classic-delve@0.2.3':
     dependencies:
-      '@datasworn/ironsworn-classic': https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/ironsworn-classic
+      '@datasworn-community/core': 0.2.9
+      '@datasworn-community/ironsworn-classic': 0.2.2
 
-  '@datasworn/ironsworn-classic@https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/ironsworn-classic':
+  '@datasworn-community/ironsworn-classic@0.2.2':
     dependencies:
-      '@datasworn/core': https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/core
+      '@datasworn-community/core': 0.2.9
 
-  '@datasworn/starforged@https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/starforged':
+  '@datasworn-community/starforged@0.2.2':
     dependencies:
-      '@datasworn/core': https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/core
+      '@datasworn-community/core': 0.2.9
 
-  '@datasworn/sundered-isles@https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/sundered-isles':
+  '@datasworn-community/sundered-isles@0.2.2':
     dependencies:
-      '@datasworn/starforged': https://codeload.github.com/tbsvttr/datasworn/tar.gz/a537d6c467cd1bb5c034678702c8ad9a3c114e91#path:pkg/nodejs/@datasworn/starforged
+      '@datasworn-community/core': 0.2.9
+      '@datasworn-community/starforged': 0.2.2
 
   '@esbuild/aix-ppc64@0.21.5':
     optional: true

@@ -55,6 +55,10 @@ import ImpactCategory from './impact-category.vue'
 .grid {
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
+	// Don't stretch shorter categories to match the tallest in the row;
+	// otherwise their flex children spread out and gap the heading from the
+	// first impact (e.g. Lasting Effects, Current Vehicle).
+	align-items: start;
 	gap: var(--ironsworn-spacer-md);
 	padding: 0 var(--ironsworn-spacer-md);
 }

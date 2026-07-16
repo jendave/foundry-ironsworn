@@ -1,22 +1,28 @@
 import { IronswornHandlebarsHelpers } from '../../helpers/handlebars'
 
-export class TruthJournalPageSheet extends foundry.appv1.sheets.JournalPageSheet {
-	// @ts-expect-error
-	isEditable: boolean
+const { JournalEntryPageHandlebarsSheet } = foundry.applications.sheets.journal
 
-	get template() {
-		return `systems/foundry-ironsworn/templates/journal/page-truth-${
-			this.isEditable ? 'edit' : 'view'
-		}.hbs`
+export class TruthJournalPageSheet extends JournalEntryPageHandlebarsSheet {
+	static EDIT_PARTS = {
+		header: (JournalEntryPageHandlebarsSheet as any).EDIT_PARTS.header,
+		content: {
+			template:
+				'systems/foundry-ironsworn/templates/journal/page-truth-edit.hbs'
+		},
+		footer: (JournalEntryPageHandlebarsSheet as any).EDIT_PARTS.footer
 	}
 
-	async getData(
-		options?: Partial<JournalPageSheet.Options> | undefined
-	): Promise<JournalPageSheet.Data<JournalPageSheet.Options>> {
-		const ret: any = await super.getData(options)
-		ret.renderedDescription = await IronswornHandlebarsHelpers.enrichMarkdown(
-			ret.data.system.Description
-		)
-		return ret
+	static VIEW_PARTS = {
+		content: {
+			template:
+				'systems/foundry-ironsworn/templates/journal/page-truth-view.hbs',
+			root: true
+		}
+	}
+
+	async _prepareContentContext(context: any, _options: object): Promise<void> {
+		context.system = this.page.system
+		context.renderedDescription =
+			await IronswornHandlebarsHelpers.enrichMarkdown(this.page.system.Description)
 	}
 }

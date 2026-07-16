@@ -58,14 +58,13 @@
 		</header>
 
 		<CollapseTransition>
-			<Suspense>
-				<section
-					v-if="expanded ?? !isCollapsible"
-					:id="bodyId"
-					:class="$style.body"
-					class="flexcol"
-					:aria-expanded="expanded"
-				>
+			<section
+				v-if="expanded ?? !isCollapsible"
+				:id="bodyId"
+				:class="$style.body"
+				class="flexcol"
+				:aria-expanded="expanded"
+			>
 					<!-- FIELDS -->
 					<section
 						v-if="asset.system.fields?.length"
@@ -129,8 +128,7 @@
 						v-if="asset.system.track"
 						class="flexrow nogrow"
 					/>
-				</section>
-			</Suspense>
+			</section>
 		</CollapseTransition>
 	</article>
 </template>
@@ -223,7 +221,14 @@ async function updateField(index: number, delta: Partial<AssetFieldType>) {
 	--ironsworn-asset-header-column: 1;
 	--ironsworn-asset-header-height: 28px;
 
-	display: grid;
+	// `&.card` doubles the class specificity so the grid display reliably wins
+	// over the inherited global `.flexcol { display: flex }` (callers pass a
+	// `flexcol` class). Otherwise the card lays out as a flex column and the
+	// global `.flexcol > * { flex: 1 }` stretches the header/deco/body into
+	// equal thirds, leaving a large gap above the asset type label.
+	&.card {
+		display: grid;
+	}
 	// gap: var(--ironsworn-spacer-sm);
 	grid-template-rows: max-content;
 	grid-auto-rows: 1fr;
@@ -288,6 +293,7 @@ async function updateField(index: number, delta: Partial<AssetFieldType>) {
 	font-weight: bold;
 	flex-grow: 0;
 	white-space: nowrap;
+	color: var(--ironsworn-color-fg);
 }
 
 .type {

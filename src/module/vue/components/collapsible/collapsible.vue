@@ -45,9 +45,9 @@
 		</component>
 		<CollapseTransition
 			ref="$collapseTransition"
-			:v-bind="props.collapseTransition"
+			v-bind="props.collapseTransition"
 			:duration="currentDuration"
-			:orientation="dimension"
+			:dimension="dimension"
 			@before-enter="
 				$emit('before-expand', $event, $collapseTransition, $element)
 			"

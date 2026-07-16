@@ -153,6 +153,7 @@ defineExpose({
 	padding: var(--ironsworn-spacer-xs);
 	width: v-bind(width);
 	height: v-bind(height);
+	min-height: v-bind(height);
 	color: inherit;
 
 	&:disabled,

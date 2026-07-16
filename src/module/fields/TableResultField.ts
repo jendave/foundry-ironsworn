@@ -32,9 +32,32 @@ export class V11TableResultField extends foundry.data.fields
 			// the typings infer this more strictly, but internally, this is consistent with every other flag field
 			flags: new fields.ObjectField({ required: false }) as any
 		})
+
+		// Foundry v14 renamed `DataField#migrateSource` to `#_migrate` and warns if
+		// `migrateSource` is defined as a method. v13 still calls `migrateSource`
+		// and has no `_migrate`. To support both without the deprecation warning,
+		// `_migrate` is defined below for v14, and `migrateSource` is attached as an
+		// instance property only on v13 (after super(), so v14's constructor check
+		// sees no `migrateSource`).
+		const supportsMigrate =
+			typeof (foundry.data.fields.DataField.prototype as any)._migrate ===
+			'function'
+		if (!supportsMigrate) {
+			;(this as any).migrateSource = (
+				sourceData: unknown,
+				fieldData: TableResultDataConstructorData
+			) => this._migrateTableResult(sourceData, fieldData)
+		}
 	}
 
-	migrateSource(
+	/** v14 migration hook. `_state.modelSource` is the legacy source object. */
+	_migrate(value: any, _options: unknown, _state: { modelSource?: unknown }) {
+		this._migrateTableResult(_state?.modelSource, value)
+		return value
+	}
+
+	/** Shared migration logic for the legacy `{ low, high, text }` row shape. */
+	protected _migrateTableResult(
 		sourceData: unknown,
 		fieldData: TableResultDataConstructorData
 	) {

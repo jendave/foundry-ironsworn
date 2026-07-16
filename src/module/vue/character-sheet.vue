@@ -51,7 +51,7 @@
 			</TabSet>
 
 			<!-- Conditions & Banes & Burdens -->
-			<section class="sheet-area nogrow" data-tourid="conditions">
+			<section class="sheet-area nogrow" :class="$style.conditions" data-tourid="conditions">
 				<conditions />
 			</section>
 		</div>
@@ -99,12 +99,23 @@ provide(
 
 .tabSet {
 	margin-top: var(--ironsworn-spacer-lg);
+	flex: 1 1 0;
+	min-height: 0;
+}
+
+.conditions {
+	margin-top: auto;
 }
 </style>
 
 <style lang="scss" scoped>
 .character-sheet-classic {
 	gap: var(--ironsworn-spacer-xl);
+}
+
+.stats {
+	flex: 0 !important;
+	justify-content: space-around;
 }
 
 .stat-roll {

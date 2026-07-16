@@ -46,6 +46,16 @@ function saveCharacteristics() {
 </script>
 
 <style lang="scss" scoped>
+// Bound the header height (2x the standard title height) so the textarea's
+// large flex-basis doesn't stretch the whole header — and with it the vitals
+// inputs, which flex to fill the column height. flex-basis is pinned to the
+// fixed height (rather than the global `.flexcol > *` default of 0%) so the
+// height is actually honoured and the header neither grows nor shrinks.
+.sf-character-header {
+	height: calc(var(--ironsworn-title-height, 50px) * 2);
+	flex: 0 0 calc(var(--ironsworn-title-height, 50px) * 2);
+}
+
 input,
 textarea {
 	border-radius: var(--ironsworn-border-radius-sm);
@@ -53,6 +63,7 @@ textarea {
 	resize: none;
 	font-family: var(--font-primary);
 	font-size: inherit;
+	line-height: 1;
 }
 
 textarea {

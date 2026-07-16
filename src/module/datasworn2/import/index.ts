@@ -2,17 +2,16 @@
 // Run this like so:
 // bun src/module/datasworn2/import/index.ts
 
-import type {
-	AssetCollection,
-	MoveCategory,
-	ClockField,
-	OracleTablesCollection,
-	OracleCollection,
-	NpcCollection,
-	Npc,
-	OracleRollableTable,
-	EmbeddedOracleRollable
-} from '@datasworn/core/dist/Datasworn'
+import type { Datasworn } from '@datasworn-community/core'
+type AssetCollection = Datasworn.AssetCollection
+type MoveCategory = Datasworn.MoveCategory
+type ClockField = Datasworn.ClockField
+type OracleTablesCollection = Datasworn.OracleTablesCollection
+type OracleCollection = Datasworn.OracleCollection
+type NpcCollection = Datasworn.NpcCollection
+type Npc = Datasworn.Npc
+type OracleRollableTable = Datasworn.OracleRollableTable
+type EmbeddedOracleRollable = Datasworn.EmbeddedOracleRollable
 import { IdParser, DataswornTree } from '..'
 import { writeFile, mkdir } from 'fs/promises'
 import { existsSync } from 'fs'

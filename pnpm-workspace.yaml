@@ -1,9 +1,3 @@
-overrides:
-  "@datasworn/core": "github:tbsvttr/datasworn#a537d6c467&path:pkg/nodejs/@datasworn/core"
-  "@datasworn/starforged": "github:tbsvttr/datasworn#a537d6c467&path:pkg/nodejs/@datasworn/starforged"
-  "@datasworn/ironsworn-classic": "github:tbsvttr/datasworn#a537d6c467&path:pkg/nodejs/@datasworn/ironsworn-classic"
-
-
 # Allow hoisting to make transitive dependencies importable
 shamefullyHoist: true
 
@@ -13,3 +7,12 @@ onlyBuiltDependencies:
   - "classic-level"
   - "esbuild"
   - "less"
+
+# pnpm >= 11 additionally requires git-hosted packages with prepare scripts to
+# be explicitly allowlisted here before they may run build scripts.
+allowBuilds:
+  "@league-of-foundry-developers/foundry-vtt-types@https://codeload.github.com/rsek/foundry-vtt-types/tar.gz/cdfca0ebe5d84bf477a85e384107d9d49200f4d6": true
+  "@parcel/watcher": true
+  classic-level: true
+  esbuild: true
+  less: true

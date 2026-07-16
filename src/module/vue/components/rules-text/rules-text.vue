@@ -17,7 +17,8 @@ import { IronswornHandlebarsHelpers } from '../../../helpers/handlebars.js'
 import { enrichMarkdown, enrichHtml } from '../../vue-plugin.js'
 import RulesSourceInfo from './rules-source-info.vue'
 import WithRolllisteners from '../with-rolllisteners.vue'
-import type { SourceInfo } from '@datasworn/core/dist/Datasworn'
+import type { Datasworn } from '@datasworn-community/core'
+type SourceInfo = Datasworn.SourceInfo
 
 const props = defineProps<{
 	/**

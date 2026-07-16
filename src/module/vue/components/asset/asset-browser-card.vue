@@ -1,10 +1,11 @@
 <template>
 	<AssetCard
+		v-if="resolvedAsset"
 		:class="$style.wrapper"
 		:expanded="state.expanded"
 		class="document"
 		draggable="true"
-		:data-uuid="resolvedAsset.uuid"
+		:data-uuid="props.uuid"
 		:readonly-fields="true"
 		:readonly-clocks="true"
 		:toggle-abilities="false"
@@ -31,15 +32,16 @@ import FontIcon from 'component:icon/font-icon.vue'
 import AssetCard from 'component:asset/asset-card.vue'
 
 const props = defineProps<{
+	uuid: string
 	assetFetcher: () => Promise<IronswornItem>
 }>()
 
 const resolvedAsset = await props.assetFetcher()
 
-provide($ItemKey, resolvedAsset)
+provide($ItemKey, resolvedAsset ?? null)
 provide(
 	ItemKey,
-	computed(() => resolvedAsset.toObject() as any)
+	computed(() => resolvedAsset?.toObject() as any)
 )
 
 const state = reactive({
@@ -47,11 +49,12 @@ const state = reactive({
 })
 
 function dragStart(ev) {
+	if (!resolvedAsset) return
 	ev.dataTransfer.setData(
 		'text/plain',
 		JSON.stringify({
 			type: 'AssetBrowserData',
-			uuid: resolvedAsset.uuid
+			uuid: props.uuid
 		})
 	)
 
@@ -59,6 +62,7 @@ function dragStart(ev) {
 }
 
 function dragEnd() {
+	if (!resolvedAsset) return
 	CONFIG.IRONSWORN.emitter.emit('dragEnd', resolvedAsset.type)
 }
 </script>

@@ -24,17 +24,18 @@ export async function typedDeleteDialog<
 
 	const type = game.i18n.localize(typeLabelKey)
 
-	return (await Dialog.confirm({
-		title: `${game.i18n.format('DOCUMENT.Delete', { type })}: ${
-			document.name as string
-		}`,
-		content: `<h4>${game.i18n.localize('AreYouSure')}</h4><p>${game.i18n.format(
-			'SIDEBAR.DeleteWarning',
-			{ type }
-		)}</p>`,
-		yes: document.delete.bind(document) as any,
-		options
-	})) as any
+	const { DialogV2 } = foundry.applications.api
+	const confirmed = await DialogV2.confirm({
+		window: {
+			title: `${game.i18n.format('DOCUMENT.Delete', { type })}: ${document.name as string}`,
+		},
+		content: `<h4>${game.i18n.localize('AreYouSure')}</h4><p>${game.i18n.format('SIDEBAR.DeleteWarning', { type })}</p>`,
+		yes: { callback: () => true },
+		no: { callback: () => false },
+		...options,
+	})
+	if (confirmed) await document.delete()
+	return document as any
 }
 
 const HASH_CACHE = {} as Record<string, string>

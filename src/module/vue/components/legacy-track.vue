@@ -163,9 +163,10 @@ function decrease() {
 	);
 	--ironsworn-legacy-xp-border-width: var(--ironsworn-border-width-md);
 
-	display: grid;
+	display: grid !important;
 	grid-template-rows: max-content max-content 0.5em max-content;
 	grid-template-columns: max-content 1fr;
+	align-items: center;
 	max-width: var(--ironsworn-legacy-track-max-width);
 
 	.legacy-track-title {
@@ -176,6 +177,7 @@ function decrease() {
 		line-height: 2;
 		letter-spacing: 0.02em;
 		font-weight: bold;
+		font-size: var(--font-size-16);
 	}
 
 	.legacy-track-controls {
@@ -230,6 +232,8 @@ function decrease() {
 			border-width: var(--ironsworn-legacy-xp-border-width);
 			width: 100%;
 			max-width: var(--ironsworn-legacy-xp-box-size);
+			height: var(--ironsworn-legacy-xp-box-size);
+			min-height: 0;
 
 			&:not(:nth-child(n + 21)) {
 				&:nth-child(2n) {

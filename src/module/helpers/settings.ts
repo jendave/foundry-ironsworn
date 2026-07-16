@@ -87,7 +87,7 @@ export class IronswornSettings {
 			label: 'IRONSWORN.Settings.ConfigurationDialog.Label',
 			icon: 'fas fa-cog',
 			hint: 'IRONSWORN.Settings.ConfigurationDialog.Hint',
-			type: FirstStartDialog,
+			type: FirstStartDialog as any,
 			restricted: true
 		})
 
@@ -126,7 +126,7 @@ export class IronswornSettings {
 			type: String,
 			choices: mapValues(IronTheme.THEMES, (v) => v.labelKey),
 			default: 'ironsworn',
-			requiresReload: true
+			requiresReload: true,
 		})
 		game.settings.register('foundry-ironsworn', 'color-scheme', {
 			name: 'IRONSWORN.Settings.ColorScheme.Name',

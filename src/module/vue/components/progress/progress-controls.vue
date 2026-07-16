@@ -32,10 +32,16 @@ import IronBtn from 'component:buttons/iron-btn.vue'
 
 const $actor = inject($ActorKey)
 
+const SUBTYPE_ICONS: Record<string, string> = {
+	progress: 'systems/foundry-ironsworn/assets/icons/fast-forward-button.svg',
+	vow: 'systems/foundry-ironsworn/assets/icons/spikes-half.svg'
+}
+
 async function addProgressItem(subtype) {
 	const itemData = {
 		name: subtype.capitalize(),
 		type: 'progress',
+		img: SUBTYPE_ICONS[subtype],
 		system: { subtype },
 		sort: 9000000
 	}
@@ -44,7 +50,7 @@ async function addProgressItem(subtype) {
 }
 
 function openFoeBrowser() {
-	new FoeBrowser().render(true)
+	void new FoeBrowser().render({ force: true })
 }
 </script>
 

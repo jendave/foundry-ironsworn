@@ -11,12 +11,16 @@
 			ref="selectables"
 			:page="page"
 			:radio-group="dsid"
+			:selected="selectedKey === `truthPage${i}`"
+			@select="selectedKey = `truthPage${i}`"
 			@change="valueChange"
 		/>
 
 		<CustomTruth
 			ref="customTruth"
 			:radio-group="dsid"
+			:selected="selectedKey === 'custom'"
+			@select="selectedKey = 'custom'"
 			@change="customValueChange"
 		/>
 
@@ -54,6 +58,10 @@ const nonTruthPages = props
 	?.pages.filter((p) => p.type !== 'truth') as NonTruthPage[]
 
 const dsid = props.je().getFlag('foundry-ironsworn', 'dsid') as string
+
+// The single selected option in this category's radio group. Keys mirror the
+// template: `truthPage${i}` for standard options, or 'custom' for the custom entry.
+const selectedKey = ref<string>()
 
 const state = reactive<{
 	title?: string

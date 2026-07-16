@@ -11,6 +11,12 @@
 export {}
 
 declare global {
+	// A class whose constructor accepts arbitrary arguments. Plain `any` doesn't
+	// work here: `class Foo extends AnyTypedThing` collapses to a zero-arg
+	// constructor signature, so `extends`-able ambient values need this shape
+	// instead.
+	type AnyClassConstructor = { new (...args: any[]): any; [k: string]: any }
+
 	// v13 namespaces / re-homed APIs --------------------------------------------
 	namespace foundry {
 		const appv1: {
@@ -26,8 +32,22 @@ declare global {
 
 		const applications: {
 			apps: { DocumentSheetConfig: any; [k: string]: any }
-			sheets: Record<string, any>
-			api: Record<string, any>
+			sheets: {
+				ActorSheetV2: AnyClassConstructor
+				ItemSheetV2: AnyClassConstructor
+				journal: {
+					JournalEntryPageHandlebarsSheet: any
+					JournalEntryPageSheet: any
+					JournalEntryPageTextSheet: any
+					[k: string]: any
+				}
+				[k: string]: any
+			}
+			api: {
+				ApplicationV2: AnyClassConstructor
+				HandlebarsApplicationMixin: (Base: AnyClassConstructor) => AnyClassConstructor
+				[k: string]: any
+			}
 			sidebar: Record<string, any>
 			ux: Record<string, any>
 			[k: string]: any
@@ -95,6 +115,10 @@ declare global {
 			JournalEntryPage?: Record<string, any>
 			[k: string]: any
 		}
+		release: {
+			generation: number
+			[k: string]: any
+		}
 	}
 }
 
@@ -109,4 +133,3 @@ declare module '@league-of-foundry-developers/foundry-vtt-types/src/foundry/comm
 		ROLL: 5
 	}>
 }
-

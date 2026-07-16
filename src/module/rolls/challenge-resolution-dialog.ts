@@ -1,54 +1,46 @@
 import ChallengeResolutionDialogVue from '../vue/challenge-resolution-dialog.vue'
 import { VueAppMixin } from '../vue/vueapp.js'
 
-export class ChallengeResolutionDialog extends VueAppMixin(Application) {
-	private constructor(
-		protected messageId: string,
-		options?: Partial<ApplicationOptions>
-	) {
-		super(options)
+const { ApplicationV2 } = foundry.applications.api
+
+export class ChallengeResolutionDialog extends VueAppMixin(ApplicationV2) {
+	static DEFAULT_OPTIONS = {
+		window: { title: 'IRONSWORN.ResolveChallenge' },
+		position: { width: 300, height: 280 },
+		rootComponent: ChallengeResolutionDialogVue,
 	}
 
 	static openDialogs = {} as Record<string, ChallengeResolutionDialog>
 
+	private constructor(protected messageId: string, options?: object) {
+		super(options ?? {})
+	}
+
 	static async showForMessage(messageId: string) {
-		// Prevent duplicates
 		if (this.openDialogs[messageId]) {
-			return await this.openDialogs[messageId].render(true)
+			return void this.openDialogs[messageId].render({ force: true })
 		}
 
-		const el = $(`.chat-message[data-message-id="${messageId}"`)
-		if (el.length < 1) return
+		const el = document.querySelector(`.chat-message[data-message-id="${messageId}"]`)
+		if (!el) return
 
+		const rect = (el as HTMLElement).getBoundingClientRect()
 		this.openDialogs[messageId] = new ChallengeResolutionDialog(messageId, {
-			left: window.innerWidth - 620,
-			top: Math.min(el[0].offsetTop - 50, window.innerHeight - 300)
+			position: {
+				left: window.innerWidth - 620,
+				top: Math.min(rect.top - 50, window.innerHeight - 300),
+			},
 		})
-		this.openDialogs[messageId].render(true)
-
+		void this.openDialogs[messageId].render({ force: true })
 		return this.openDialogs[messageId]
 	}
 
-	async close(options?: Application.CloseOptions): Promise<void> {
+	async _getVueData(): Promise<object> {
+		return { messageId: this.messageId }
+	}
+
+	_onClose(options: object): void {
 		delete ChallengeResolutionDialog.openDialogs[this.messageId]
-		await super.close(options)
-	}
-
-	static get defaultOptions() {
-		return foundry.utils.mergeObject(super.defaultOptions, {
-			title: 'IRONSWORN.ResolveChallenge',
-			width: 300,
-			height: 280,
-			rootComponent: ChallengeResolutionDialogVue
-		}) as any
-	}
-
-	getData(
-		options?: Partial<ApplicationOptions> | undefined
-	): MaybePromise<object> {
-		return {
-			...super.getData(options),
-			messageId: this.messageId
-		}
+		super._onClose(options)
 	}
 }

@@ -291,10 +291,7 @@ export class OracleTable extends RollTable {
 			{
 				author: game.user?.id,
 				speaker,
-				style:
-					roll != null
-						? CONST.CHAT_MESSAGE_STYLES.ROLL
-						: CONST.CHAT_MESSAGE_STYLES.OTHER,
+				style: CONST.CHAT_MESSAGE_STYLES.OTHER,
 				roll,
 				rolls: compact([roll, cursedDie]),
 				sound: roll != null ? CONFIG.sounds.dice : null,

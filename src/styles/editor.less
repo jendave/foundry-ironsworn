@@ -1,7 +1,8 @@
 /* stylelint-disable no-duplicate-selectors */
 // styles for ProseMirror editors
 
-.app.ironsworn {
+.app.ironsworn,
+.application.ironsworn {
 	// Editors: shared styles
 	.editor {
 		--ironsworn-editor-height-min: 100px;
@@ -20,6 +21,47 @@
 		border-top-width: 0;
 		border-radius: 0 0 var(--ironsworn-border-radius-lg)
 			var(--ironsworn-border-radius-lg);
+	}
+
+	// In edit mode the ProseMirror editor fills the available height of its
+	// container the same way the rendered content does in view mode. The toolbar
+	// must stay its natural size; only the content grows. The DOM differs by
+	// Foundry version: v13 places `menu.editor-menu` as a direct child, while v14
+	// wraps it in `div.menu-container` (and the editor in `div.editor-container`).
+	// Pin the toolbar in both, and let the editor area absorb the extra height.
+	.editor.prosemirror {
+		// v13: the toolbar is a direct `menu.editor-menu` and sizes to its content.
+		> menu.editor-menu {
+			flex: none;
+		}
+
+		// v14: the toolbar lives in `.menu-container`, whose height Foundry sets
+		// via `--menu-height` (the menu itself is absolutely positioned, so it
+		// contributes no height). Restore that fixed basis, which the global
+		// `.flexcol > * { flex: 1 }` would otherwise override.
+		> .menu-container {
+			flex: 0 0 var(--menu-height);
+		}
+
+		// Foundry themes the editor toolbar with a dark `--menu-background`
+		// (--color-cool-4), set on `.prosemirror`/`body.theme-dark .prosemirror`
+		// and reasserted in dark contexts, so it stays dark on the light Zinc/
+		// Oceanic schemes. Override `--menu-background` (which the menu actually
+		// reads) on the editor itself, and also paint the toolbar directly, so it
+		// matches the sheet background on every colour scheme.
+		--menu-background: var(--ironsworn-color-bg);
+
+		menu.editor-menu {
+			--menu-background: var(--ironsworn-color-bg);
+
+			background: var(--ironsworn-color-bg) !important;
+		}
+
+		> .editor-container,
+		.editor-content,
+		.ProseMirror {
+			flex: 1 1 auto;
+		}
 	}
 
 	.editor-edit {

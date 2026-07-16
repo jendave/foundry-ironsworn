@@ -88,7 +88,7 @@ function assetBrowser() {
 	if (!theAssetBrowser) {
 		theAssetBrowser = new AssetCompendiumBrowser()
 	}
-	theAssetBrowser.render(true, { focus: true })
+	void theAssetBrowser.render({ force: true })
 }
 </script>
 <style lang="scss" module>
@@ -96,6 +96,9 @@ function assetBrowser() {
 	gap: var(--ironsworn-spacer-md);
 }
 .list {
+	flex: 1 1 0;
+	min-height: 0;
+	overflow-y: auto;
 	gap: var(--ironsworn-spacer-md);
 }
 

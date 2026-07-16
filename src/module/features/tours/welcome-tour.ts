@@ -35,7 +35,7 @@ export class WelcomeTour extends IronswornTour {
 				content: 'IRONSWORN.Tours.Welcome.CharacterCreateContent',
 				hook: async () => {
 					this.createActorDialog = new CreateActorDialog()
-					await this.createActorDialog.render(true)
+					await this.createActorDialog.render({ force: true })
 					await new Promise((r) => setTimeout(r, 100))
 				},
 				selector: '#new-actor-dialog #new-character'

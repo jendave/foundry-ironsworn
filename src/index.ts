@@ -74,9 +74,6 @@ Hooks.once('init', async () => {
 	// Bootstrap settings and pull in theme
 	IronswornSettings.registerSettings()
 
-	// Theme configuration
-	IronColor.colorSchemeSetup()
-
 	CONFIG.IRONSWORN = IRONSWORN
 
 	foundry.utils.mergeObject(CONFIG.Actor, ActorConfig)
@@ -221,6 +218,16 @@ Hooks.once('init', async () => {
 		}
 	)
 
+	// Register Handlebars partials used by the progress journal page
+	await (loadTemplates as any)({
+		progressButtons:
+			'systems/foundry-ironsworn/templates/journal/progress-buttons.hbs',
+		progressBoxes:
+			'systems/foundry-ironsworn/templates/journal/progress-boxes.hbs',
+		rankPips:
+			'systems/foundry-ironsworn/templates/journal/progress-rank-pips.hbs'
+	})
+
 	// Register Handlebars helpers
 	IronswornHandlebarsHelpers.registerHelpers()
 	IronswornChatCard.registerHooks()
@@ -230,6 +237,8 @@ Hooks.once('init', async () => {
 })
 
 Hooks.once('ready', async () => {
+	// World settings are fully loaded here; apply color scheme before rendering.
+	IronColor.colorSchemeSetup()
 	registerDragAndDropHooks()
 	registerChatAlertHooks()
 	registerIconHooks()

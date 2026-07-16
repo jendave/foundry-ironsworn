@@ -23,6 +23,13 @@ const props = withDefaults(
 
 <style lang="scss" scoped>
 .ironsworn-sheet {
+	flex: 1 1 0;
+	min-height: 0;
 	gap: var(--ironsworn-spacer-xl);
+}
+
+.ironsworn-sheet-body {
+	flex: 1 1 0;
+	min-height: 0;
 }
 </style>

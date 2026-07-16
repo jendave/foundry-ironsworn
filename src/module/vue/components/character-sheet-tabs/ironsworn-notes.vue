@@ -1,5 +1,7 @@
 <template>
-	<RichEditor v-model="actor.system.biography" @save="immediateSave" />
+	<div class="flexcol">
+		<RichEditor v-model="actor.system.biography" @save="immediateSave" />
+	</div>
 </template>
 
 <script setup lang="ts">

@@ -1,4 +1,6 @@
-import { Npc, NpcCollection } from '@datasworn/core/dist/Datasworn'
+import type { Datasworn } from '@datasworn-community/core'
+type Npc = Datasworn.Npc
+type NpcCollection = Datasworn.NpcCollection
 import { compact, flatten } from 'lodash-es'
 import {
 	DataswornTree,

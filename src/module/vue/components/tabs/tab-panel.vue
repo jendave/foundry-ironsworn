@@ -97,5 +97,7 @@ const transitionName = computed(() => {
 .tabPanel {
 	backface-visibility: hidden;
 	background-color: var(--ironsworn-color-bg);
+	flex: 1 1 0;
+	min-height: 0;
 }
 </style>

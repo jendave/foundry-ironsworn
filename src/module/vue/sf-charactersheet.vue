@@ -1,11 +1,11 @@
 <template>
-	<article class="flexcol sf-character-sheet" data-tourid="sheet">
+	<article class="flexcol sf-character-sheet" :class="$style.sheet" data-tourid="sheet">
 		<!-- TODO: rm inline styles added to maintain consistent styling (required largely because of other inline styles) -->
 		<!-- Header row -->
 		<sf-characterheader />
 
 		<!-- Main body row -->
-		<div class="flexrow">
+		<div class="flexrow" :class="$style.body">
 			<!-- Momentum on left -->
 			<div
 				class="flexcol margin-left nogrow"
@@ -17,11 +17,12 @@
 			</div>
 
 			<!-- Center area -->
-			<div class="flexcol">
+			<div class="flexcol" :class="$style.center">
 				<!-- Attributes -->
 				<div
 					id="stats"
 					class="flexrow stats"
+					:class="$style.stats"
 					style="margin-bottom: var(--ironsworn-spacer-xl)"
 					data-tooltip-direction="UP"
 					data-tourid="stats">
@@ -34,6 +35,7 @@
 				<TabSet
 					:id="`${data.actor._id}_sf-character-sheet`"
 					:tab-keys="['legacies', 'assets', 'progress', 'connections', 'notes']"
+					:class="$style.tabSet"
 					data-tourid="tabs">
 					<TabList>
 						<Tab tab-key="legacies" :text="$t('IRONSWORN.Legacies')" />
@@ -51,7 +53,7 @@
 							<SfLegacies />
 						</TabPanel>
 						<TabPanel tab-key="assets" class="flexcol">
-							<PlayerAssets :class="$style.topPadding" />
+							<PlayerAssets :class="$style.assets" />
 						</TabPanel>
 						<TabPanel tab-key="progress" class="flexcol">
 							<SfProgresses :class="$style.topPadding" />
@@ -64,19 +66,24 @@
 						</TabPanel>
 					</TabPanels>
 				</TabSet>
+
+				<!-- Impacts: kept inside the center column (like the Ironsworn
+					sheet) so they never extend under the right-side condition
+					meters and cover the HOLD track when the sheet is resized. -->
+				<section class="nogrow" :class="$style.impacts" data-tourid="impacts">
+					<hr class="nogrow" />
+					<sf-impacts />
+				</section>
 			</div>
 
 			<!-- Stats on right -->
 			<PcConditionMeters
 				class="flexcol margin-right"
+				:class="$style.conditionMeters"
 				data-tooltip-direction="UP"
 				label-position="left"
 				data-tourid="resources" />
 		</div>
-
-		<!-- Impacts -->
-		<hr class="nogrow" />
-		<sf-impacts class="nogrow" data-tourid="impacts" />
 	</article>
 </template>
 
@@ -111,6 +118,39 @@ provide(ActorKey, computed(() => props.data.actor) as any)
 <style lang="scss" module>
 .topPadding {
 	padding-top: var(--ironsworn-spacer-md);
+}
+.assets {
+	flex: 1 1 0;
+	min-height: 0;
+	padding-top: var(--ironsworn-spacer-md);
+}
+.sheet {
+	flex: 1 1 0;
+	min-height: 0;
+}
+.body {
+	flex: 1 1 0;
+	min-height: 0;
+	overflow-y: auto;
+}
+.center {
+	flex: 1 1 0;
+	min-height: 0;
+}
+.stats {
+	flex: 0 !important;
+	justify-content: space-around;
+}
+.conditionMeters {
+	align-self: flex-start;
+}
+.impacts {
+	// pin to the bottom of the center column, matching the Ironsworn sheet
+	margin-top: auto;
+}
+.tabSet {
+	flex: 1 1 0;
+	min-height: 0;
 }
 </style>
 

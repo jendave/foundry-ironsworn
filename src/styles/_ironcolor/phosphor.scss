@@ -33,6 +33,9 @@
 	// now that the vars are set, set the overrides to FVTT's vars that are dependent on them.
 	@include fvtt.colors;
 
-	// Restyle FVTT's UI
-	@include fvtt.ui;
+	// Restyle FVTT's UI — only applied on v13; v14's DOM structure differs enough
+	// that the same overrides break the main UI layout.
+	&:is(.foundry-v13) {
+		@include fvtt.ui;
+	}
 }

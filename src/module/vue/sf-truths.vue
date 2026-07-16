@@ -41,7 +41,8 @@
 
 <script setup lang="ts">
 import { inject, ref } from 'vue'
-import type { Truth } from '@datasworn/core/dist/Datasworn'
+import type { Datasworn } from '@datasworn-community/core'
+type Truth = Datasworn.Truth
 import { $LocalEmitterKey } from './provisions'
 import IronBtn from './components/buttons/iron-btn.vue'
 import TruthCategory from './components/truth/truth-category.vue'

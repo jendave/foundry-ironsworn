@@ -5,9 +5,11 @@ import { IronswornTour } from './ironsworn_tour'
 export class SFCharacterTour extends IronswornTour {
 	constructor(actor: IronswornActor) {
 		const sheet = actor.sheet as unknown as StarforgedCharacterSheet
-		const sheetSel = `.app[data-appid="${sheet?.appId}"]`
+		const sheetSel = sheet?.element?.id ? `#${sheet.element.id}` : `.app[data-appid="${(sheet as any)?.appId}"]`
 
 		super({
+			id: 'sf-character',
+			namespace: 'foundry-ironsworn',
 			title: 'IRONSWORN.Tours.SFCharacter.Title',
 			description: 'IRONSWORN.Tours.SFCharacter.Description',
 			canBeResumed: false,
@@ -17,12 +19,6 @@ export class SFCharacterTour extends IronswornTour {
 					title: 'IRONSWORN.Tours.SFCharacter.SheetTitle',
 					content: 'IRONSWORN.Tours.SFCharacter.SheetContent',
 					selector: `${sheetSel} [data-tourid="sheet"]`
-				},
-				{
-					id: 'edit-button',
-					title: 'IRONSWORN.Tours.SFCharacter.EditButtonTitle',
-					content: 'IRONSWORN.Tours.SFCharacter.EditButtonContent',
-					selector: `${sheetSel} .ironsworn-toggle-edit-mode`
 				},
 				{
 					id: 'stats',

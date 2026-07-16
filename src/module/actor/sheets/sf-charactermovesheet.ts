@@ -5,61 +5,53 @@ import { $ActorKey } from '../../vue/provisions'
 import { VueAppMixin } from '../../vue/vueapp.js'
 import { MoveSheetTour } from '../../features/tours/move-sheet-tour'
 
-export class SFCharacterMoveSheet extends VueAppMixin(Application) {
+const { ApplicationV2 } = foundry.applications.api
+
+export class SFCharacterMoveSheet extends VueAppMixin(ApplicationV2) {
 	constructor(
 		protected actor: IronswornActor,
-		options?: Partial<ApplicationOptions>
+		options?: object
 	) {
-		super(options)
+		super(options ?? {})
 	}
 
-	getData(
-		options?: Partial<ApplicationOptions> | undefined
-	): MaybePromise<object> {
-		return {
-			...super.getData(options),
-			actor: this.actor.toObject()
-		}
+	static DEFAULT_OPTIONS = {
+		classes: ['ironsworn', 'ironsworn-movesheet'],
+		position: { width: 350, height: 980, left: 685 },
+		window: {
+			resizable: true,
+			controls: [
+				{
+					action: 'openHelp',
+					icon: 'fa fa-circle-question',
+					label: 'IRONSWORN.Tour',
+				},
+			],
+		},
+		actions: {
+			async openHelp(this: SFCharacterMoveSheet) {
+				await new MoveSheetTour(this).start()
+			},
+		},
+		rootComponent: CharacterMoveSheet,
+	}
+
+	get title(): string {
+		return `${game.i18n.localize('IRONSWORN.ITEMS.TypeMove')} — ${this.actor.name}`
 	}
 
 	setupVueApp(app: App<any>): void {
 		app.provide($ActorKey, this.actor)
 	}
 
-	static get defaultOptions() {
-		return foundry.utils.mergeObject(super.defaultOptions, {
-			resizable: true,
-			width: 350,
-			height: 960,
-			left: 685,
-			rootComponent: CharacterMoveSheet
-		}) as any
-	}
-
-	get title() {
-		return `${game.i18n.localize('IRONSWORN.ITEMS.TypeMove')} — ${
-			this.actor.name
-		}`
+	async _getVueData(): Promise<object> {
+		return {
+			actor: this.actor.toObject(),
+		}
 	}
 
 	activateTab(tabKey: string) {
 		this.localEmitter.emit('activateTab', tabKey)
-	}
-
-	protected _getHeaderButtons(): Application.HeaderButton[] {
-		return [
-			{
-				class: 'ironsworn-help',
-				icon: 'fa fa-circle-question',
-				label: '',
-				onclick: async () => {
-					const tour = new MoveSheetTour(this)
-					await tour.reset()
-					tour.start()
-				}
-			},
-			...super._getHeaderButtons()
-		]
 	}
 }
 
