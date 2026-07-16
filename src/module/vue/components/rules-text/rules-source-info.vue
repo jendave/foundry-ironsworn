@@ -12,7 +12,8 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
-import type { SourceInfo } from '@datasworn/core/dist/Datasworn'
+import type { Datasworn } from '@datasworn-community/core'
+type SourceInfo = Datasworn.SourceInfo
 
 const props = defineProps<{ source: SourceInfo }>()
 

@@ -1,9 +1,8 @@
-import type {
-	OracleCollection,
-	OracleRollableTable,
-	OracleTablesCollection,
-	RulesetId
-} from '@datasworn-community/core/dist/Datasworn'
+import type { Datasworn } from '@datasworn-community/core'
+type OracleCollection = Datasworn.OracleCollection
+type OracleRollableTable = Datasworn.OracleRollableTable
+type OracleTablesCollection = Datasworn.OracleTablesCollection
+type RulesetId = Datasworn.RulesetId
 import { cloneDeep, compact } from 'lodash-es'
 import {
 	DataswornTree,

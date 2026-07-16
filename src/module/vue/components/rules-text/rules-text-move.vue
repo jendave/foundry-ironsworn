@@ -23,7 +23,8 @@
 </template>
 
 <script setup lang="ts">
-import type { Move } from '@datasworn/core/dist/Datasworn'
+import type { Datasworn } from '@datasworn-community/core'
+type Move = Datasworn.Move
 import { computed } from 'vue'
 import RulesText from './rules-text.vue'
 import { IdParser } from '../../../datasworn2'
