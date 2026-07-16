@@ -1,4 +1,4 @@
-import type { Asset, AssetCollection } from '@datasworn/core/dist/Datasworn'
+import type { Asset, AssetCollection } from '@datasworn-community/core/dist/Datasworn'
 import { compact } from 'lodash-es'
 import {
 	DataswornTree,

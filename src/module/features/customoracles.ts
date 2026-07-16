@@ -3,7 +3,7 @@ import type {
 	OracleRollableTable,
 	OracleTablesCollection,
 	RulesetId
-} from '@datasworn/core/dist/Datasworn'
+} from '@datasworn-community/core/dist/Datasworn'
 import { cloneDeep, compact } from 'lodash-es'
 import {
 	DataswornTree,

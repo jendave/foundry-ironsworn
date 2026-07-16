@@ -56,7 +56,7 @@
 }
 */
 
-import type { Npc } from '@datasworn/core/dist/Datasworn'
+import type { Npc } from '@datasworn-community/core/dist/Datasworn'
 import { renderLinksInStr, renderText } from './rendering'
 
 export function renderNpcDescription(npc: Npc): string {

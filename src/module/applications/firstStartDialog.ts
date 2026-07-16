@@ -1,4 +1,4 @@
-import { Expansion } from '@datasworn/core/dist/Datasworn'
+import { Expansion } from '@datasworn-community/core/dist/Datasworn'
 import { DataswornTree } from '../datasworn2'
 import { registerDefaultOracleTrees } from '../features/customoracles'
 import { DataswornRulesetKey, IronswornSettings, RULESETS } from '../helpers/settings'

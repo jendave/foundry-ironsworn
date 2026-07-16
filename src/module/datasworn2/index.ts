@@ -1,10 +1,10 @@
-import classic from '@datasworn/ironsworn-classic/json/classic.json'
-import delve from '@datasworn/ironsworn-classic-delve/json/delve.json'
-import starforged from '@datasworn/starforged/json/starforged.json'
-import sunderedIsles from '@datasworn/sundered-isles/json/sundered_isles.json'
+import classic from '@datasworn-community/ironsworn-classic/json/classic.json'
+import delve from '@datasworn-community/ironsworn-classic-delve/json/delve.json'
+import starforged from '@datasworn-community/starforged/json/starforged.json'
+import sunderedIsles from '@datasworn-community/sundered-isles/json/sundered_isles.json'
 
-import * as DSCore from '@datasworn/core'
-import type { Datasworn } from '@datasworn/core'
+import * as DSCore from '@datasworn-community/core'
+import type { Datasworn } from '@datasworn-community/core'
 
 const rulesPackages = [
 	classic,

@@ -4,7 +4,7 @@ import {
 	getPackAndIndexForCompendiumKey
 } from '../datasworn2'
 import { DataswornRulesetKey, IronswornSettings } from '../helpers/settings'
-import type { Move, MoveCategory } from '@datasworn/core/dist/Datasworn'
+import type { Move, MoveCategory } from '@datasworn-community/core/dist/Datasworn'
 import { moveTriggerIsRollable } from '../rolls/preroll-dialog'
 import { compact } from 'lodash-es'
 import { IronswornItem } from '../item/item'

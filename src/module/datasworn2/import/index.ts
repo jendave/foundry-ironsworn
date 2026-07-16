@@ -12,7 +12,7 @@ import type {
 	Npc,
 	OracleRollableTable,
 	EmbeddedOracleRollable
-} from '@datasworn/core/dist/Datasworn'
+} from '@datasworn-community/core/dist/Datasworn'
 import { IdParser, DataswornTree } from '..'
 import { writeFile, mkdir } from 'fs/promises'
 import { existsSync } from 'fs'
