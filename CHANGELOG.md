@@ -2,6 +2,8 @@
 
 ## Next Release
 
+## 1.28.0
+
 - Fixes by [@jendave](https://github.com/jendave):
   - Remove warnings from system.json ([#1080](https://github.com/ben/foundry-ironsworn/pull/1080)).
   - Token HUD error ([#1082](https://github.com/ben/foundry-ironsworn/pull/1082)).
