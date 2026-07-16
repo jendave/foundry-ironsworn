@@ -41,15 +41,15 @@
     },
     "exclusiveOptions": [
       {
+        "name": "Thunderwood",
+        "selected": false
+      },
+      {
         "name": "Bloodwood",
         "selected": false
       },
       {
         "name": "Ghostwood",
-        "selected": false
-      },
-      {
-        "name": "Thunderwood",
         "selected": false
       },
       {

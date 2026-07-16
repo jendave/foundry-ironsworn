@@ -24,13 +24,18 @@
     ],
     "track": {
       "enabled": true,
-      "name": "Integrity",
+      "name": "Supply (hold)",
       "max": 5,
       "value": 5,
       "min": 0
     },
     "exclusiveOptions": [],
-    "conditions": [],
+    "conditions": [
+      {
+        "name": "Unequipped (hold)",
+        "ticked": false
+      }
+    ],
     "description": ""
   },
   "img": "systems/foundry-ironsworn/assets/assets/ship-wheel.svg",

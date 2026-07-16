@@ -41,11 +41,11 @@
     },
     "exclusiveOptions": [
       {
-        "name": "Geared for War",
+        "name": "Lightly Armored",
         "selected": false
       },
       {
-        "name": "Lightly Armored",
+        "name": "Geared for War",
         "selected": false
       }
     ],

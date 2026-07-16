@@ -2,6 +2,8 @@
 
 ## Next Release
 
+- Fresh import from datasworn-community data
+
 ## 1.28.0
 
 - Fixes by [@jendave](https://github.com/jendave):
