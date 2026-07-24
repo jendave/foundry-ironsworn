@@ -86,3 +86,36 @@
 		padding: var(--ironsworn-spacer-lg);
 	}
 }
+
+// The core TableResult config sheet (opened when editing an individual roll
+// table row) embeds a ProseMirror editor for the result Description. Its default
+// 560px width is too narrow, so the editor toolbar buttons wrap onto a second
+// row. This is a core Foundry sheet and never gets the `.ironsworn` class, so
+// widen it directly. AppV2 applies `width` as an inline style; a stylesheet
+// `min-width` wins over it and forces the sheet wide enough for the toolbar.
+.table-result-config {
+	min-width: 640px;
+
+	// The Description editor collapses to a single line here. Core already sizes
+	// the `<prose-mirror>` element (it's a 200px flex column), but its inner
+	// `.editor-content` only gets `height: 100%` from a rule scoped to
+	// `body.game .sheet.app` — the V1 frame class. This is an AppV2 sheet
+	// (`.application`, not `.app`), so the content never fills the column and
+	// sits one line tall at the top. Make it grow to fill the available height.
+	// The `<prose-mirror>` wrapper also carries the `.editor` class. On v13,
+	// `phosphor.scss` re-emits `editor.scss` under `.ironcolor__phosphor.foundry-v13`
+	// (via `@include fvtt.ui`), producing `.ironcolor__phosphor.foundry-v13 .editor
+	// { min-height: 100px }` — three classes, which outranks a bare
+	// `.table-result-config prose-mirror` (two classes + element) and caps the
+	// editor at 100px. (v14 skips that include, so this only bites on v13.) Match
+	// `.editor` here too so the selector wins on both versions.
+	prose-mirror.editor {
+		min-height: 240px;
+	}
+
+	.editor-content {
+		flex: 1;
+		height: 100%;
+		overflow-y: auto;
+	}
+}
